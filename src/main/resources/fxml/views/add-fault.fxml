@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.AddFaultController"
+      spacing="15"
+      alignment="CENTER"
+      prefWidth="420"
+      prefHeight="500">
+
+    <padding>
+        <Insets top="20"
+                right="20"
+                bottom="20"
+                left="20"/>
+    </padding>
+
+    <Label
+            text="Add New Fault"
+            style="-fx-font-size:24px; -fx-font-weight:bold;"/>
+
+    <!-- Location -->
+
+    <ComboBox
+            fx:id="locationBox"
+            promptText="Select Location"/>
+
+    <!-- Fault Category -->
+
+    <ComboBox
+            fx:id="categoryBox"
+            promptText="Select Fault Category"/>
+
+    <!-- Urgency -->
+
+    <ComboBox
+            fx:id="urgencyBox"
+            promptText="Select Priority"/>
+
+    <!-- Crew -->
+
+    <ComboBox
+            fx:id="crewBox"
+            promptText="Assign Crew"/>
+
+    <!-- Status -->
+
+    <ComboBox
+            fx:id="statusBox"
+            promptText="Select Status"/>
+
+    <HBox
+            spacing="15"
+            alignment="CENTER">
+
+        <Button
+                text="Save"
+                onAction="#saveFault"/>
+
+        <Button
+                text="Cancel"
+                onAction="#closeWindow"/>
+
+    </HBox>
+
+</VBox>

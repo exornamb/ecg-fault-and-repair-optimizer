@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.DispatchController"
+            stylesheets="@../../css/style.css"
+            fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED">
+
+    <VBox spacing="20"
+          styleClass="dashboard-page">
+
+        <padding>
+            <Insets top="25"
+                    right="30"
+                    bottom="30"
+                    left="30"/>
+        </padding>
+
+
+        <!-- ========================= -->
+        <!-- PAGE HEADER -->
+        <!-- ========================= -->
+
+        <VBox spacing="5">
+
+            <Label text="Dispatch Center"
+                   styleClass="dashboard-heading"/>
+
+            <Label text="Assign response crews to reported electrical faults."
+                   styleClass="page-subtitle"/>
+
+        </VBox>
+
+
+        <!-- ========================= -->
+        <!-- SUMMARY CARDS -->
+        <!-- ========================= -->
+
+        <HBox spacing="20">
+
+            <!-- PENDING FAULTS -->
+
+            <VBox styleClass="stat-card"
+                  HBox.hgrow="ALWAYS">
+
+                <Label text="Pending Faults"
+                       styleClass="card-title"/>
+
+                <Label fx:id="pendingCountLabel"
+                       text="0"
+                       styleClass="card-number"/>
+
+                <Label text="Waiting for dispatch"
+                       styleClass="card-subtitle"/>
+
+            </VBox>
+
+
+            <!-- ASSIGNED FAULTS -->
+
+            <VBox styleClass="stat-card"
+                  HBox.hgrow="ALWAYS">
+
+                <Label text="Assigned Faults"
+                       styleClass="card-title"/>
+
+                <Label fx:id="assignedCountLabel"
+                       text="0"
+                       styleClass="card-number"/>
+
+                <Label text="Crews currently dispatched"
+                       styleClass="card-subtitle"/>
+
+            </VBox>
+
+
+            <!-- AVAILABLE CREWS -->
+
+            <VBox styleClass="stat-card"
+                  HBox.hgrow="ALWAYS">
+
+                <Label text="Available Crews"
+                       styleClass="card-title"/>
+
+                <Label fx:id="availableCrewCountLabel"
+                       text="5"
+                       styleClass="card-number"/>
+
+                <Label text="Response teams"
+                       styleClass="card-subtitle"/>
+
+            </VBox>
+
+        </HBox>
+
+
+        <!-- ========================= -->
+        <!-- DISPATCH SECTION -->
+        <!-- ========================= -->
+
+        <HBox spacing="20"
+              alignment="TOP_LEFT"
+              fillHeight="false">
+
+
+            <!-- ========================= -->
+            <!-- DISPATCH QUEUE -->
+            <!-- ========================= -->
+
+            <VBox spacing="15"
+                  styleClass="content-card"
+                  HBox.hgrow="ALWAYS">
+
+
+                <!-- QUEUE HEADER -->
+
+                <HBox alignment="CENTER_LEFT">
+
+                    <VBox spacing="3">
+
+                        <Label text="Dispatch Queue"
+                               styleClass="section-title"/>
+
+                        <Label text="Select a fault that requires crew assignment"
+                               styleClass="card-subtitle"/>
+
+                    </VBox>
+
+                    <Pane HBox.hgrow="ALWAYS"/>
+
+                    <Label fx:id="queueCountLabel"
+                           text="0 faults"
+                           styleClass="card-subtitle"/>
+
+                </HBox>
+
+
+                <!-- TABLE -->
+
+                <TableView fx:id="faultTable"
+                           prefHeight="350"
+                           minHeight="300">
+
+                    <columns>
+
+                        <TableColumn fx:id="faultIdColumn"
+                                     text="Fault ID"
+                                     prefWidth="110"/>
+
+                        <TableColumn fx:id="areaColumn"
+                                     text="Area"
+                                     prefWidth="150"/>
+
+                        <TableColumn fx:id="priorityColumn"
+                                     text="Priority"
+                                     prefWidth="110"/>
+
+                        <TableColumn fx:id="crewColumn"
+                                     text="Assigned Crew"
+                                     prefWidth="150"/>
+
+                        <TableColumn fx:id="statusColumn"
+                                     text="Status"
+                                     prefWidth="120"/>
+
+                    </columns>
+
+                </TableView>
+
+            </VBox>
+
+
+            <!-- ========================= -->
+            <!-- CREW ASSIGNMENT PANEL -->
+            <!-- ========================= -->
+
+            <VBox spacing="18"
+                  prefWidth="300"
+                  minWidth="280"
+                  styleClass="content-card">
+
+
+                <!-- PANEL HEADER -->
+
+                <VBox spacing="3">
+
+                    <Label text="Crew Assignment"
+                           styleClass="section-title"/>
+
+                    <Label text="Dispatch a crew to the selected fault."
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+
+                <!-- SELECTED FAULT -->
+
+                <VBox spacing="5">
+
+                    <Label text="Selected Fault"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="selectedFaultLabel"
+                           text="No fault selected"/>
+
+                </VBox>
+
+
+                <!-- LOCATION -->
+
+                <VBox spacing="5">
+
+                    <Label text="Location"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="selectedAreaLabel"
+                           text="-"/>
+
+                </VBox>
+
+
+                <!-- PRIORITY -->
+
+                <VBox spacing="5">
+
+                    <Label text="Priority"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="selectedPriorityLabel"
+                           text="-"/>
+
+                </VBox>
+                <!-- =========================
+     CREW RECOMMENDATION
+     ========================= -->
+
+                <VBox spacing="10"
+                      styleClass="recommendation-card">
+
+                    <Label text="Recommended Crew"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="recommendedCrewLabel"
+                           text="No recommendation"
+                           styleClass="recommendation-crew"/>
+
+                    <Label fx:id="recommendationReasonLabel"
+                           text="Select a fault to receive a crew recommendation."
+                           wrapText="true"
+                           styleClass="recommendation-reason"/>
+
+                </VBox>
+
+
+                <!-- CREW -->
+
+                <VBox spacing="8">
+
+                    <Label text="Response Crew"
+                           styleClass="card-title"/>
+
+                    <ComboBox fx:id="crewBox"
+                              promptText="Select Crew"
+                              maxWidth="Infinity"/>
+
+                </VBox>
+
+
+                <!-- ASSIGN BUTTON -->
+
+                <Button fx:id="assignCrewButton"
+                        text="Assign Crew"
+                        styleClass="primary-button"
+                        maxWidth="Infinity"
+                        onAction="#assignCrew"/>
+
+            </VBox>
+
+        </HBox>
+
+    </VBox>
+
+</ScrollPane>

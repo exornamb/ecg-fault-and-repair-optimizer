@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.SplashController"
+      alignment="CENTER"
+      spacing="20"
+      style="-fx-background-color:white;">
+
+    <padding>
+        <Insets top="40" right="40" bottom="40" left="40"/>
+    </padding>
+
+    <ImageView fx:id="logoImage"
+               fitWidth="140"
+               fitHeight="140"
+               preserveRatio="true"/>
+
+    <Label text="ECG SMART DISPATCH SYSTEM"
+           style="-fx-font-size:28;
+                  -fx-font-weight:bold;
+                  -fx-text-fill:#004d40;"/>
+
+    <Label text="Electrical Fault Management &amp; Resource Dispatch"
+           style="-fx-font-size:16;
+                  -fx-text-fill:#555555;"/>
+
+    <Label text="University of Ghana"
+           style="-fx-font-size:15;
+                  -fx-font-weight:bold;"/>
+
+    <ProgressIndicator prefWidth="60"
+                       prefHeight="60"/>
+
+    <Label text="Loading..."
+           style="-fx-font-size:14;"/>
+
+    <Label text="Version 1.0"
+           style="-fx-text-fill:gray;"/>
+
+</VBox>

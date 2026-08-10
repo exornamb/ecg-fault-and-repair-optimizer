@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.SettingsController"
+            stylesheets="@../../css/style.css"
+            fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED">
+
+    <content>
+
+        <VBox spacing="25"
+              styleClass="dashboard-page">
+
+            <padding>
+                <Insets top="30"
+                        right="30"
+                        bottom="30"
+                        left="30"/>
+            </padding>
+
+
+            <!-- =========================
+                 PAGE HEADER
+                 ========================= -->
+
+            <VBox spacing="5">
+
+                <Label text="Settings"
+                       styleClass="dashboard-heading"/>
+
+                <Label text="Configure system preferences and dispatch operations."
+                       styleClass="page-subtitle"/>
+
+            </VBox>
+
+
+            <!-- =========================
+                 SYSTEM CONFIGURATION
+                 ========================= -->
+
+            <VBox spacing="20"
+                  styleClass="content-card">
+
+                <VBox spacing="3">
+
+                    <Label text="System Configuration"
+                           styleClass="section-title"/>
+
+                    <Label text="General settings for the ECG Smart Dispatch System"
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+                <Separator/>
+
+
+                <!-- SYSTEM NAME -->
+
+                <HBox alignment="CENTER_LEFT"
+                      spacing="30">
+
+                    <VBox spacing="5"
+                          HBox.hgrow="ALWAYS">
+
+                        <Label text="System Name"/>
+
+                        <Label text="Name displayed across the application"
+                               styleClass="card-subtitle"/>
+
+                    </VBox>
+
+                    <TextField fx:id="systemNameField"
+                               text="ECG Smart Dispatch System"
+                               prefWidth="350"/>
+
+                </HBox>
+
+
+                <!-- REGION -->
+
+                <HBox alignment="CENTER_LEFT"
+                      spacing="30">
+
+                    <VBox spacing="5"
+                          HBox.hgrow="ALWAYS">
+
+                        <Label text="Operational Region"/>
+
+                        <Label text="Default service region for dispatch operations"
+                               styleClass="card-subtitle"/>
+
+                    </VBox>
+
+                    <ComboBox fx:id="regionBox"
+                              prefWidth="350"
+                              promptText="Select Region"/>
+
+                </HBox>
+
+
+                <!-- RESPONSE TARGET -->
+
+                <HBox alignment="CENTER_LEFT"
+                      spacing="30">
+
+                    <VBox spacing="5"
+                          HBox.hgrow="ALWAYS">
+
+                        <Label text="Response Target"/>
+
+                        <Label text="Target response time for reported faults"
+                               styleClass="card-subtitle"/>
+
+                    </VBox>
+
+                    <ComboBox fx:id="responseTargetBox"
+                              prefWidth="350"
+                              promptText="Select Target"/>
+
+                </HBox>
+
+            </VBox>
+
+
+            <!-- =========================
+                 NOTIFICATIONS
+                 ========================= -->
+
+            <VBox spacing="20"
+                  styleClass="content-card">
+
+                <VBox spacing="3">
+
+                    <Label text="Notifications"
+                           styleClass="section-title"/>
+
+                    <Label text="Control operational alerts and system notifications"
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+                <Separator/>
+
+
+                <!-- HIGH PRIORITY -->
+
+                <HBox alignment="CENTER_LEFT">
+
+                    <VBox spacing="5"
+                          HBox.hgrow="ALWAYS">
+
+                        <Label text="High Priority Fault Alerts"/>
+
+                        <Label text="Receive alerts when a high priority fault is reported"
+                               styleClass="card-subtitle"/>
+
+                    </VBox>
+
+                    <CheckBox fx:id="highPriorityAlerts"
+                              selected="true"/>
+
+                </HBox>
+
+
+                <!-- DISPATCH -->
+
+                <HBox alignment="CENTER_LEFT">
+
+                    <VBox spacing="5"
+                          HBox.hgrow="ALWAYS">
+
+                        <Label text="Dispatch Notifications"/>
+
+                        <Label text="Receive notifications when crews are assigned"
+                               styleClass="card-subtitle"/>
+
+                    </VBox>
+
+                    <CheckBox fx:id="dispatchNotifications"
+                              selected="true"/>
+
+                </HBox>
+
+
+                <!-- RESOLUTION -->
+
+                <HBox alignment="CENTER_LEFT">
+
+                    <VBox spacing="5"
+                          HBox.hgrow="ALWAYS">
+
+                        <Label text="Resolution Notifications"/>
+
+                        <Label text="Receive notifications when faults are resolved"
+                               styleClass="card-subtitle"/>
+
+                    </VBox>
+
+                    <CheckBox fx:id="resolutionNotifications"
+                              selected="true"/>
+
+                </HBox>
+
+            </VBox>
+
+
+            <!-- =========================
+                 ACTIONS
+                 ========================= -->
+
+            <HBox alignment="CENTER_RIGHT"
+                  spacing="15">
+
+                <Button text="Reset"
+                        styleClass="secondary-button"
+                        onAction="#resetSettings"/>
+
+                <Button text="Save Settings"
+                        styleClass="primary-button"
+                        onAction="#saveSettings"/>
+
+            </HBox>
+
+        </VBox>
+
+    </content>
+
+</ScrollPane>

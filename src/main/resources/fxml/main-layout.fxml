@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.MainLayoutController"
+            stylesheets="@../css/style.css">
+
+    <!-- ===========================
+         SIDEBAR
+         =========================== -->
+
+    <left>
+
+        <VBox prefWidth="260"
+              spacing="18"
+              styleClass="sidebar">
+
+            <padding>
+                <Insets top="28" right="18" bottom="28" left="18"/>
+            </padding>
+
+            <!-- LOGO -->
+
+            <VBox spacing="3">
+
+                <Label text="⚡ ECG"
+                       styleClass="sidebar-title"/>
+
+                <Label text="Smart Dispatch"
+                       styleClass="sidebar-subtitle"/>
+
+            </VBox>
+
+            <Separator opacity="0.15"/>
+
+            <!-- MENU -->
+
+            <Button fx:id="dashboardButton"
+                    text="🏠 Dashboard"
+                    styleClass="menu-button"
+                    onAction="#openDashboard"/>
+
+            <Button fx:id="faultButton"
+                    text="⚡ Fault Management"
+                    styleClass="menu-button"
+                    onAction="#openFaultManagement"/>
+
+            <Button fx:id="dispatchButton"
+                    text="🚚 Dispatch Center"
+                    styleClass="menu-button"
+                    onAction="#openDispatch"/>
+
+            <Button fx:id="analyticsButton"
+                    text="📊 Analytics"
+                    styleClass="menu-button"
+                    onAction="#openAnalytics"/>
+
+            <Button fx:id="databaseButton"
+                    text="🗄 Database"
+                    styleClass="menu-button"
+                    onAction="#openDatabase"/>
+
+            <Button fx:id="settingsButton"
+                    text="⚙ Settings"
+                    styleClass="menu-button"
+                    onAction="#openSettings"/>
+
+            <Pane VBox.vgrow="ALWAYS"/>
+
+            <Separator opacity="0.15"/>
+
+            <Button text="🚪 Logout"
+                    maxWidth="Infinity"
+                    styleClass="logout-button"
+                    onAction="#logout"/>
+
+        </VBox>
+
+    </left>
+
+    <!-- ===========================
+         MAIN CONTENT
+         =========================== -->
+
+    <center>
+
+        <VBox spacing="18"
+              style="-fx-background-color:#EEF3F8;">
+
+            <!-- TOP BAR -->
+
+            <HBox alignment="CENTER_LEFT"
+                  spacing="20"
+                  styleClass="top-bar">
+
+                <padding>
+                    <Insets top="18"
+                            right="30"
+                            bottom="18"
+                            left="30"/>
+                </padding>
+
+                <Label text="ECG Smart Dispatch"
+                       styleClass="page-title"/>
+
+                <Pane HBox.hgrow="ALWAYS"/>
+
+                <Label text="Administrator"
+                       style="-fx-font-size:15px;
+                              -fx-font-weight:bold;
+                              -fx-text-fill:#64748B;"/>
+
+            </HBox>
+
+            <!-- CONTENT -->
+
+            <StackPane fx:id="contentPane"
+                       VBox.vgrow="ALWAYS"
+                       style="-fx-padding:22;
+                              -fx-background-color:transparent;"/>
+
+        </VBox>
+
+    </center>
+
+</BorderPane>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.EditFaultController"
+      spacing="18"
+      alignment="CENTER"
+      prefWidth="420"
+      prefHeight="500">
+
+    <padding>
+        <Insets top="25"
+                right="25"
+                bottom="25"
+                left="25"/>
+    </padding>
+
+    <Label
+            text="Edit Fault"
+            style="-fx-font-size:24px;
+                   -fx-font-weight:bold;"/>
+
+    <!-- Location -->
+
+    <ComboBox
+            fx:id="locationBox"
+            promptText="Location"
+            prefWidth="280"/>
+
+    <!-- Fault Category -->
+
+    <ComboBox
+            fx:id="categoryBox"
+            promptText="Fault Category"
+            prefWidth="280"/>
+
+    <!-- Priority / Urgency -->
+
+    <ComboBox
+            fx:id="urgencyBox"
+            promptText="Priority"
+            prefWidth="280"/>
+
+    <!-- Assigned Crew -->
+
+    <ComboBox
+            fx:id="crewBox"
+            promptText="Assigned Crew"
+            prefWidth="280"/>
+
+    <!-- Status -->
+
+    <ComboBox
+            fx:id="statusBox"
+            promptText="Status"
+            prefWidth="280"/>
+
+    <HBox
+            spacing="20"
+            alignment="CENTER">
+
+        <Button
+                text="Save Changes"
+                onAction="#saveChanges"
+                prefWidth="140"/>
+
+        <Button
+                text="Cancel"
+                onAction="#closeWindow"
+                prefWidth="100"/>
+
+    </HBox>
+
+</VBox>

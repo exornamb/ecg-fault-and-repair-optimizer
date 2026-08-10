@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.DashboardController"
+            stylesheets="@../../css/style.css"
+            fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            styleClass="dashboard-scroll">
+
+    <content>
+
+        <VBox spacing="20"
+              styleClass="dashboard-page">
+
+            <padding>
+                <Insets top="20"
+                        right="30"
+                        bottom="30"
+                        left="30"/>
+            </padding>
+
+
+            <!-- PAGE HEADER -->
+
+            <VBox spacing="5">
+
+                <Label text="Dashboard"
+                       styleClass="dashboard-heading"/>
+
+                <Label text="Overview of ECG fault and dispatch operations"
+                       styleClass="page-subtitle"/>
+
+            </VBox>
+
+
+            <!-- KPI CARDS -->
+
+            <HBox spacing="20">
+
+                <VBox styleClass="stat-card"
+                      HBox.hgrow="ALWAYS">
+
+                    <Label text="Active Faults"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="activeFaultsLabel"
+                           text="0"
+                           styleClass="card-number"/>
+
+                    <Label text="Currently unresolved"
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+
+                <VBox styleClass="stat-card"
+                      HBox.hgrow="ALWAYS">
+
+                    <Label text="Active Crews"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="activeCrewsLabel"
+                           text="0"
+                           styleClass="card-number"/>
+
+                    <Label text="Assigned to faults"
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+
+                <VBox styleClass="stat-card"
+                      HBox.hgrow="ALWAYS">
+
+                    <Label text="Average Response"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="avgResponseLabel"
+                           text="18 min"
+                           styleClass="card-number"/>
+
+                    <Label text="Current response average"
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+
+                <VBox styleClass="stat-card"
+                      HBox.hgrow="ALWAYS">
+
+                    <Label text="Repairs Today"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="repairsTodayLabel"
+                           text="0"
+                           styleClass="card-number"/>
+
+                    <Label text="Resolved faults"
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+            </HBox>
+
+
+            <!-- ANALYTICS -->
+
+            <HBox spacing="20"
+                  prefHeight="270">
+
+                <!-- FAULT TRENDS -->
+
+                <VBox spacing="10"
+                      styleClass="content-card"
+                      HBox.hgrow="ALWAYS">
+
+                    <VBox spacing="3">
+
+                        <Label text="Fault Trends"
+                               styleClass="section-title"/>
+
+                        <Label text="Fault activity during the week"
+                               styleClass="card-subtitle"/>
+
+                    </VBox>
+
+                    <LineChart fx:id="faultChart"
+                               animated="true"
+                               createSymbols="true"
+                               prefHeight="210"
+                               minHeight="210">
+
+                        <xAxis>
+                            <CategoryAxis label="Day"/>
+                        </xAxis>
+
+                        <yAxis>
+                            <NumberAxis label="Faults"
+                                        forceZeroInRange="true"/>
+                        </yAxis>
+
+                    </LineChart>
+
+                </VBox>
+
+
+                <!-- FAULT CATEGORIES -->
+
+                <VBox spacing="10"
+                      styleClass="content-card"
+                      prefWidth="360">
+
+                    <VBox spacing="3">
+
+                        <Label text="Fault Categories"
+                               styleClass="section-title"/>
+
+                        <Label text="Distribution by fault type"
+                               styleClass="card-subtitle"/>
+
+                    </VBox>
+
+                    <PieChart fx:id="pieChart"
+                              labelsVisible="true"
+                              legendVisible="true"
+                              prefWidth="330"
+                              prefHeight="270"
+                              minHeight="270"/>
+
+                </VBox>
+
+            </HBox>
+
+
+            <!-- RECENT FAULTS -->
+
+            <VBox spacing="10"
+                  styleClass="content-card">
+
+                <VBox spacing="3">
+
+                    <Label text="Recent Faults"
+                           styleClass="section-title"/>
+
+                    <Label text="Latest faults recorded in the system"
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+                <TableView fx:id="faultTable"
+                           prefHeight="250"
+                           minHeight="250">
+
+                    <columns>
+
+                        <TableColumn fx:id="faultIdColumn"
+                                     text="Fault ID"
+                                     prefWidth="130"/>
+
+                        <TableColumn fx:id="areaColumn"
+                                     text="Area"
+                                     prefWidth="200"/>
+
+                        <TableColumn fx:id="priorityColumn"
+                                     text="Priority"
+                                     prefWidth="130"/>
+
+                        <TableColumn fx:id="crewColumn"
+                                     text="Assigned Crew"
+                                     prefWidth="180"/>
+
+                        <TableColumn fx:id="statusColumn"
+                                     text="Status"
+                                     prefWidth="160"/>
+
+                    </columns>
+
+                </TableView>
+
+            </VBox>
+
+        </VBox>
+
+    </content>
+
+</ScrollPane>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.DatabaseController"
+            stylesheets="@../../css/style.css"
+            fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            styleClass="dashboard-scroll">
+
+    <content>
+
+        <VBox spacing="22"
+              fillWidth="true">
+
+            <padding>
+                <Insets top="28"
+                        right="30"
+                        bottom="30"
+                        left="30"/>
+            </padding>
+
+
+            <!-- =========================
+                 PAGE HEADER
+                 ========================= -->
+
+            <VBox spacing="4">
+
+                <Label text="Database"
+                       styleClass="dashboard-heading"/>
+
+                <Label text="View and inspect operational records stored in the system."
+                       styleClass="page-subtitle"/>
+
+            </VBox>
+
+
+            <!-- =========================
+                 DATABASE SUMMARY
+                 ========================= -->
+
+            <HBox spacing="18"
+                  fillHeight="true">
+
+                <VBox styleClass="stat-card"
+                      HBox.hgrow="ALWAYS">
+
+                    <Label text="Total Records"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="totalRecordsLabel"
+                           text="0"
+                           styleClass="card-number"/>
+
+                    <Label text="Fault records stored"
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+
+                <VBox styleClass="stat-card"
+                      HBox.hgrow="ALWAYS">
+
+                    <Label text="Pending"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="pendingRecordsLabel"
+                           text="0"
+                           styleClass="card-number"/>
+
+                    <Label text="Awaiting assignment"
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+
+                <VBox styleClass="stat-card"
+                      HBox.hgrow="ALWAYS">
+
+                    <Label text="Assigned"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="assignedRecordsLabel"
+                           text="0"
+                           styleClass="card-number"/>
+
+                    <Label text="Currently being handled"
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+
+                <VBox styleClass="stat-card"
+                      HBox.hgrow="ALWAYS">
+
+                    <Label text="Resolved"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="resolvedRecordsLabel"
+                           text="0"
+                           styleClass="card-number"/>
+
+                    <Label text="Completed records"
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+            </HBox>
+
+
+            <!-- =========================
+                 DATABASE RECORDS
+                 ========================= -->
+
+            <VBox spacing="16"
+                  styleClass="content-card"
+                  minHeight="500">
+
+                <!-- HEADER -->
+
+                <HBox alignment="CENTER_LEFT"
+                      spacing="15">
+
+                    <VBox spacing="3">
+
+                        <Label text="Fault Records"
+                               styleClass="section-title"/>
+
+                        <Label text="Complete operational fault dataset"
+                               styleClass="card-subtitle"/>
+
+                    </VBox>
+
+                    <Pane HBox.hgrow="ALWAYS"/>
+
+                    <Label fx:id="recordCountLabel"
+                           text="0 records"
+                           styleClass="card-subtitle"/>
+
+                </HBox>
+
+
+                <!-- SEARCH -->
+
+                <HBox alignment="CENTER_LEFT"
+                      spacing="15">
+
+                    <TextField fx:id="searchField"
+                               promptText="Search Fault ID, Area, Crew or Status..."
+                               styleClass="search-field"
+                               prefWidth="420"
+                               prefHeight="42"
+                               HBox.hgrow="ALWAYS"/>
+
+                    <Button text="Refresh"
+                            prefWidth="90"
+                            prefHeight="42"
+                            styleClass="secondary-button"
+                            onAction="#refreshDatabase"/>
+
+                </HBox>
+
+
+                <!-- =========================
+                     TABLE
+                     ========================= -->
+
+                <TableView fx:id="faultTable"
+                           prefHeight="450"
+                           minHeight="400">
+
+                    <columns>
+
+                        <TableColumn fx:id="faultIdColumn"
+                                     text="Fault ID"
+                                     prefWidth="140"/>
+
+                        <TableColumn fx:id="areaColumn"
+                                     text="Area"
+                                     prefWidth="220"/>
+
+                        <TableColumn fx:id="priorityColumn"
+                                     text="Priority"
+                                     prefWidth="150"/>
+
+                        <TableColumn fx:id="crewColumn"
+                                     text="Assigned Crew"
+                                     prefWidth="200"/>
+
+                        <TableColumn fx:id="statusColumn"
+                                     text="Status"
+                                     prefWidth="180"/>
+
+                    </columns>
+
+                </TableView>
+
+
+                <!-- DATABASE INFO -->
+
+                <HBox alignment="CENTER_LEFT"
+                      spacing="10">
+
+                    <Label text="Data Source:"
+                           styleClass="card-title"/>
+
+                    <Label text="ECG Smart Dispatch Fault Service"
+                           styleClass="card-subtitle"/>
+
+                    <Pane HBox.hgrow="ALWAYS"/>
+
+                    <Label text="Shared operational dataset"
+                           styleClass="card-subtitle"/>
+
+                </HBox>
+
+            </VBox>
+
+        </VBox>
+
+    </content>
+
+</ScrollPane>
