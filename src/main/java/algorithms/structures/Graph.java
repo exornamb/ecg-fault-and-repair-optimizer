@@ -1,4 +1,4 @@
-package structures;
+package main.java.algorithms.structures;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package structures;
+package main.java.algorithms.structures;
 
 public class HashTable<K, V> {
 

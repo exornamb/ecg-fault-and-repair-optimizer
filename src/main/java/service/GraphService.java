@@ -1,14 +1,14 @@
-package service;
+package main.java.service;
 
-import structures.Graph;
-import database.DatabaseConnection;
+import main.java.algorithms.structures.Graph;
+import  main.java.database.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import structures.HashTable;
+import main.java.algorithms.structures.HashTable;
 
 public class GraphService {
 
