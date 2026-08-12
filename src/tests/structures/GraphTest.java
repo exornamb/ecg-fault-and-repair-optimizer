@@ -1,4 +1,4 @@
-package structures;
+package tests.structures;
 
 import org.junit.jupiter.api.Test;
 import java.util.List;

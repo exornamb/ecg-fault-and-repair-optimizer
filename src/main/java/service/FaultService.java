@@ -1,4 +1,4 @@
-package service;
+package main.java.service;
 
 import dao.FaultDAO;
 import javafx.collections.FXCollections;

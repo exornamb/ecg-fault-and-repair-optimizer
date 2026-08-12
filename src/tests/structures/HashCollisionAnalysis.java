@@ -1,4 +1,4 @@
-package structures;
+package tests.structures;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +10,7 @@ public class HashCollisionAnalysis {
 
     public static void main(String[] args) {
 
-        // Test at 3 different fill levels, as the brief asks for.
+        // Test at 3 different fill levels
         int[] testSizes = { 100, 1000, 20000 };
 
         for (int n : testSizes) {
