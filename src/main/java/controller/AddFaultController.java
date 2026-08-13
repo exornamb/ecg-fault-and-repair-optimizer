@@ -1,4 +1,4 @@
-package controller;
+package main.java.controller;
 
 import dao.FaultDAO;
 import dao.LocationDAO;
