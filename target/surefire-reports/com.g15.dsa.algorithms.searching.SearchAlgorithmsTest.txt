@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.g15.dsa.algorithms.searching.SearchAlgorithmsTest
+-------------------------------------------------------------------------------
+Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.105 s -- in com.g15.dsa.algorithms.searching.SearchAlgorithmsTest

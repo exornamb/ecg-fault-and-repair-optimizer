@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20" styleClass="view-root"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.g15.dsa.controller.SettingsController">
+
+    <!-- HEADER -->
+    <HBox alignment="CENTER_LEFT" spacing="14">
+        <Label text="⚙" style="-fx-font-size: 30px;"/>
+        <VBox spacing="2">
+            <Label text="Team Parameters &amp; Configuration" styleClass="view-title"/>
+            <Label text="Index-Derived Constants • Database • Algorithm Parameters" styleClass="view-subtitle"/>
+        </VBox>
+    </HBox>
+
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="transparent-scroll">
+        <VBox spacing="16">
+
+            <!-- TEAM INFO CARD -->
+            <VBox styleClass="kpi-card" spacing="12">
+                <padding><Insets top="16" right="20" bottom="16" left="20"/></padding>
+                <Label text="GROUP 15 — CODEBILITY" style="-fx-font-size:14px; -fx-font-weight:bold; -fx-text-fill:#f8fafc;"/>
+                <GridPane hgap="16" vgap="8">
+                    <Label text="Course:" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-text-fill:#94a3b8;"/>
+                    <Label text="DCIT 204 &amp; DCIT 308" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-text-fill:#f8fafc;"/>
+                    <Label text="Project:" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-text-fill:#94a3b8;"/>
+                    <Label text="ECG Dumsor Response &amp; Repair Optimizer v2.0" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-text-fill:#f8fafc;"/>
+                    <Label text="University:" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-text-fill:#94a3b8;"/>
+                    <Label text="University of Ghana, Legon" GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-text-fill:#f8fafc;"/>
+                </GridPane>
+            </VBox>
+
+            <!-- ALGORITHM PARAMETERS -->
+            <VBox styleClass="kpi-card" spacing="12">
+                <padding><Insets top="16" right="20" bottom="16" left="20"/></padding>
+                <Label text="INDEX-DERIVED ALGORITHM PARAMETERS" style="-fx-font-size:13px; -fx-font-weight:bold; -fx-text-fill:#94a3b8; -fx-letter-spacing:1px;"/>
+                <GridPane hgap="20" vgap="8">
+                    <Label text="HashTable Capacity:" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-text-fill:#94a3b8;"/>
+                    <Label fx:id="lblHashCapacity" text="" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-text-fill:#22d3ee; -fx-font-weight:bold;"/>
+                    <Label text="B-Tree Min Degree (t):" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-text-fill:#94a3b8;"/>
+                    <Label fx:id="lblBTreeT" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-text-fill:#22d3ee; -fx-font-weight:bold;"/>
+                    <Label text="Knapsack Capacity (kg):" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-text-fill:#94a3b8;"/>
+                    <Label fx:id="lblKnapsackCap" text="" GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-text-fill:#22d3ee; -fx-font-weight:bold;"/>
+                    <Label text="Max Dispatch Iterations:" GridPane.columnIndex="0" GridPane.rowIndex="3" style="-fx-text-fill:#94a3b8;"/>
+                    <Label fx:id="lblMaxIter" text="" GridPane.columnIndex="1" GridPane.rowIndex="3" style="-fx-text-fill:#22d3ee; -fx-font-weight:bold;"/>
+                    <Label text="DB Partition (mod):" GridPane.columnIndex="0" GridPane.rowIndex="4" style="-fx-text-fill:#94a3b8;"/>
+                    <Label fx:id="lblDbPartition" text="" GridPane.columnIndex="1" GridPane.rowIndex="4" style="-fx-text-fill:#22d3ee; -fx-font-weight:bold;"/>
+                </GridPane>
+            </VBox>
+
+            <!-- DATABASE STATUS -->
+            <VBox styleClass="kpi-card" spacing="12">
+                <padding><Insets top="16" right="20" bottom="16" left="20"/></padding>
+                <Label text="DATABASE CONNECTION" style="-fx-font-size:13px; -fx-font-weight:bold; -fx-text-fill:#94a3b8; -fx-letter-spacing:1px;"/>
+                <TextArea fx:id="dbStatusArea" editable="false" wrapText="true" prefHeight="120"
+                          styleClass="defense-output"
+                          promptText="Loading database status…"/>
+                <Button text="🔄  Refresh Connection Status" onAction="#onRefreshDb" styleClass="btn-secondary"/>
+            </VBox>
+
+        </VBox>
+    </ScrollPane>
+
+</VBox>
