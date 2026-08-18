@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.g15.dsa.structures.DisjointSetTest
+-------------------------------------------------------------------------------
+Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.050 s -- in com.g15.dsa.structures.DisjointSetTest

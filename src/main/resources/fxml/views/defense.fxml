@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.g15.dsa.controller.DefenseVisualizerController"
+      spacing="16"
+      styleClass="view-container">
+
+    <!-- HEADER TITLE -->
+    <HBox alignment="CENTER_LEFT" spacing="12">
+        <VBox spacing="2">
+            <Label text="Oral Defense &amp; Algorithm Visualizer" styleClass="view-title"/>
+            <Label text="Interactive DSA demonstration platform mapped to all 14 team members' topics &amp; theoretical proofs." styleClass="view-subtitle"/>
+        </VBox>
+    </HBox>
+
+    <!-- SELECTOR & CONTROLS -->
+    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="filter-card">
+        <padding>
+            <Insets top="12" right="16" bottom="12" left="16"/>
+        </padding>
+
+        <Label text="Select Member / Topic:" styleClass="filter-label"/>
+        <ComboBox fx:id="topicSelector" prefWidth="540" styleClass="filter-combo"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button fx:id="btnResetDemo" text="↺  Reset" onAction="#handleResetDemo" styleClass="btn-secondary"/>
+        <Button fx:id="btnRunDemo" text="▶  Run Live Demonstration" onAction="#handleRunDemo" styleClass="btn-primary"/>
+    </HBox>
+
+    <!-- TOPIC OVERVIEW & THEORY QUESTIONS -->
+    <VBox styleClass="card" spacing="8">
+        <padding>
+            <Insets top="14" right="16" bottom="14" left="16"/>
+        </padding>
+        <Label fx:id="topicTitleLabel" text="Topic Overview" styleClass="card-title"/>
+        <Label fx:id="studentInfoLabel" text="Student Info" styleClass="defense-meta"/>
+        <Label text="Core Oral Defense Q&amp;A Reference:" styleClass="defense-section-label"/>
+        <Label fx:id="theoryQuestionLabel" text="Questions and theoretical justifications" wrapText="true" styleClass="defense-qna"/>
+    </VBox>
+
+    <!-- LIVE DEMONSTRATION LOG -->
+    <VBox styleClass="card" VBox.vgrow="ALWAYS" spacing="8">
+        <padding>
+            <Insets top="12" right="16" bottom="14" left="16"/>
+        </padding>
+        <Label text="Algorithm Execution Trace &amp; Complexity Output" styleClass="card-title"/>
+        <TextArea fx:id="defenseOutputArea" editable="false" VBox.vgrow="ALWAYS" wrapText="false" styleClass="defense-terminal"/>
+    </VBox>
+
+</VBox>
