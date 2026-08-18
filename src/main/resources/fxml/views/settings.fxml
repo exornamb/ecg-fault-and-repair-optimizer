@@ -38,18 +38,20 @@
             <!-- ALGORITHM PARAMETERS -->
             <VBox styleClass="kpi-card" spacing="12">
                 <padding><Insets top="16" right="20" bottom="16" left="20"/></padding>
-                <Label text="INDEX-DERIVED ALGORITHM PARAMETERS" style="-fx-font-size:13px; -fx-font-weight:bold; -fx-text-fill:#94a3b8; -fx-letter-spacing:1px;"/>
+                <Label text="INDEX-DERIVED ALGORITHM PARAMETERS (Michelle Sarfo — 22396802)" style="-fx-font-size:13px; -fx-font-weight:bold; -fx-text-fill:#94a3b8; -fx-letter-spacing:1px;"/>
                 <GridPane hgap="20" vgap="8">
-                    <Label text="HashTable Capacity:" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-text-fill:#94a3b8;"/>
-                    <Label fx:id="lblHashCapacity" text="" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-text-fill:#22d3ee; -fx-font-weight:bold;"/>
-                    <Label text="B-Tree Min Degree (t):" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-text-fill:#94a3b8;"/>
-                    <Label fx:id="lblBTreeT" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-text-fill:#22d3ee; -fx-font-weight:bold;"/>
-                    <Label text="Knapsack Capacity (kg):" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-text-fill:#94a3b8;"/>
-                    <Label fx:id="lblKnapsackCap" text="" GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-text-fill:#22d3ee; -fx-font-weight:bold;"/>
-                    <Label text="Max Dispatch Iterations:" GridPane.columnIndex="0" GridPane.rowIndex="3" style="-fx-text-fill:#94a3b8;"/>
-                    <Label fx:id="lblMaxIter" text="" GridPane.columnIndex="1" GridPane.rowIndex="3" style="-fx-text-fill:#22d3ee; -fx-font-weight:bold;"/>
-                    <Label text="DB Partition (mod):" GridPane.columnIndex="0" GridPane.rowIndex="4" style="-fx-text-fill:#94a3b8;"/>
-                    <Label fx:id="lblDbPartition" text="" GridPane.columnIndex="1" GridPane.rowIndex="4" style="-fx-text-fill:#22d3ee; -fx-font-weight:bold;"/>
+                    <Label text="HashTable Prime Capacity:" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-text-fill:#94a3b8;"/>
+                    <Label fx:id="lblHashCapacity" text="103 (Prime)" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-text-fill:#22d3ee; -fx-font-weight:bold;"/>
+                    <Label text="HashTable Hash Seed:" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-text-fill:#94a3b8;"/>
+                    <Label fx:id="lblHashSeed" text="6802" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-text-fill:#22d3ee; -fx-font-weight:bold;"/>
+                    <Label text="Urgency Weight (w_u):" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-text-fill:#94a3b8;"/>
+                    <Label fx:id="lblUrgencyWeight" text="1.4" GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-text-fill:#22d3ee; -fx-font-weight:bold;"/>
+                    <Label text="Road Penalty Factor:" GridPane.columnIndex="0" GridPane.rowIndex="3" style="-fx-text-fill:#94a3b8;"/>
+                    <Label fx:id="lblRoadPenalty" text="1.2" GridPane.columnIndex="1" GridPane.rowIndex="3" style="-fx-text-fill:#22d3ee; -fx-font-weight:bold;"/>
+                    <Label text="B-Tree Min Degree (t):" GridPane.columnIndex="0" GridPane.rowIndex="4" style="-fx-text-fill:#94a3b8;"/>
+                    <Label fx:id="lblBTreeT" text="3" GridPane.columnIndex="1" GridPane.rowIndex="4" style="-fx-text-fill:#22d3ee; -fx-font-weight:bold;"/>
+                    <Label text="Knapsack Capacity (kg):" GridPane.columnIndex="0" GridPane.rowIndex="5" style="-fx-text-fill:#94a3b8;"/>
+                    <Label fx:id="lblKnapsackCap" text="50 kg" GridPane.columnIndex="1" GridPane.rowIndex="5" style="-fx-text-fill:#22d3ee; -fx-font-weight:bold;"/>
                 </GridPane>
             </VBox>
 

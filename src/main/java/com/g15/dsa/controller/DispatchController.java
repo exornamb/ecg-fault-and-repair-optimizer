@@ -1,6 +1,7 @@
 package com.g15.dsa.controller;
 
 import com.g15.dsa.algorithms.graph.Dijkstra;
+import com.g15.dsa.database.TeamParameters;
 import com.g15.dsa.structures.Graph;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -12,7 +13,8 @@ import java.util.List;
 
 /**
  * Dispatch & Routing Controller.
- * Provides a live Dijkstra demo over the Accra/Legon ECG substation network.
+ * Provides a live Dijkstra demo over the Accra/Legon ECG substation network
+ * with index-derived urgency weighting and road condition penalties.
  */
 public class DispatchController {
 
@@ -53,10 +55,13 @@ public class DispatchController {
         routeOutput.setText(
                 "Accra/Legon ECG Substation Network loaded.\n\n" +
                 "5 Substations | 8 Directed Edges\n\n" +
+                "Team Index Parameters Active:\n" +
+                "• Urgency Weight (w_u) : " + TeamParameters.URGENCY_WEIGHT + "\n" +
+                "• Road Penalty Factor  : " + TeamParameters.ROAD_PENALTY + "\n" +
+                "• Hash Capacity (Prime): " + TeamParameters.HASH_CAPACITY + "\n" +
+                "• Hash Seed Constant   : " + TeamParameters.HASH_SEED + "\n\n" +
                 "Select source and destination nodes, then click 'Find Shortest Route' to run\n" +
-                "Dijkstra's algorithm in real time.\n\n" +
-                "The algorithm uses a Min-Heap (PriorityQueue) to greedily select the\n" +
-                "unvisited node with the smallest tentative distance at each step.\n" +
+                "Dijkstra's algorithm and calculate route priority scores in real time.\n\n" +
                 "Time Complexity: O((V + E) log V)"
         );
     }
@@ -78,22 +83,35 @@ public class DispatchController {
             return;
         }
 
-        Dijkstra.Result result = Dijkstra.shortestPath(graph, src);
+        Dijkstra.Result result = Dijkstra.shortestPaths(graph, src);
         double dist = result.getDistanceTo(tgt);
         List<Integer> path = result.getPathTo(tgt);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("─── Dijkstra Shortest Path Result ───\n\n");
+        sb.append("─── Dijkstra Shortest Path & Route Scoring ───\n\n");
         sb.append("Source      : ").append(STATIONS[src]).append("\n");
         sb.append("Destination : ").append(STATIONS[tgt]).append("\n\n");
 
-        if (dist == Double.MAX_VALUE || path.isEmpty()) {
+        if (!result.hasPathTo(tgt) || path.isEmpty()) {
             sb.append("⚠ No path exists between the selected substations.");
             lblDistance.setText("∞");
             lblHops.setText("—");
         } else {
-            sb.append(String.format("Distance    : %.1f km%n", dist));
-            sb.append("Hops        : ").append(path.size() - 1).append("\n\n");
+            double penalizedDist = dist * TeamParameters.ROAD_PENALTY;
+            double scoreCritical = calculateDispatchScore(dist, 5);
+            double scoreHigh = calculateDispatchScore(dist, 4);
+            double scoreMedium = calculateDispatchScore(dist, 3);
+
+            sb.append(String.format("Physical Distance    : %.1f km%n", dist));
+            sb.append(String.format("Road Penalty Factor  : %.1fx (Michelle's Index Parameter)%n", TeamParameters.ROAD_PENALTY));
+            sb.append(String.format("Effective Road Cost  : %.2f km (Distance × %.1f)%n", penalizedDist, TeamParameters.ROAD_PENALTY));
+            sb.append("Hops                 : ").append(path.size() - 1).append("\n\n");
+
+            sb.append("─── Dispatch Priority Scores (Urgency Weight = ").append(TeamParameters.URGENCY_WEIGHT).append(") ───\n");
+            sb.append(String.format("  • Critical Outage (Urgency 5) Dispatch Score : %.2f%n", scoreCritical));
+            sb.append(String.format("  • High Outage     (Urgency 4) Dispatch Score : %.2f%n", scoreHigh));
+            sb.append(String.format("  • Medium Outage   (Urgency 3) Dispatch Score : %.2f%n%n", scoreMedium));
+
             sb.append("Optimal Route:\n");
             for (int i = 0; i < path.size(); i++) {
                 int node = path.get(i);
@@ -104,14 +122,33 @@ public class DispatchController {
             sb.append("\n\n─── All Distances from ").append(STATIONS[src]).append(" ───\n");
             for (int v = 0; v < graph.getVertexCount(); v++) {
                 double d = result.getDistanceTo(v);
-                sb.append(String.format("  To %-35s : %s km%n",
-                        STATIONS[v], d == Double.MAX_VALUE ? "UNREACHABLE" : String.format("%.1f", d)));
+                double penD = Double.isInfinite(d) ? Double.POSITIVE_INFINITY : d * TeamParameters.ROAD_PENALTY;
+                sb.append(String.format("  To %-30s : %s km (Effective: %s km)%n",
+                        STATIONS[v],
+                        Double.isInfinite(d) ? "UNREACHABLE" : String.format("%.1f", d),
+                        Double.isInfinite(penD) ? "UNREACHABLE" : String.format("%.2f", penD)));
             }
             lblDistance.setText(String.format("%.1f km", dist));
             lblHops.setText(String.valueOf(path.size() - 1));
         }
 
         routeOutput.setText(sb.toString());
+    }
+
+    /**
+     * Calculates the composite dispatch score using Michelle's index-derived parameters.
+     * Score = (Urgency * URGENCY_WEIGHT) / (Road Distance * ROAD_PENALTY)
+     */
+    public static double calculateDispatchScore(double roadDistance, int urgency) {
+        double effectiveDist = Math.max(0.1, roadDistance * TeamParameters.ROAD_PENALTY);
+        return (urgency * TeamParameters.URGENCY_WEIGHT) / effectiveDist;
+    }
+
+    /**
+     * Calculates effective travel distance penalized by road conditions.
+     */
+    public static double calculatePenalizedDistance(double roadDistance) {
+        return roadDistance * TeamParameters.ROAD_PENALTY;
     }
 
     @FXML
@@ -124,7 +161,7 @@ public class DispatchController {
     }
 
     private void buildGraph() {
-        graph = new Graph(5, true);   // 5 nodes, directed
+        graph = new Graph(5);
         // Achimota → Legon (3.2 km)
         graph.addEdge(0, 1, 3.2);
         graph.addEdge(1, 0, 3.2);

@@ -1,8 +1,9 @@
 package com.g15.dsa.structures;
 
+import com.g15.dsa.database.TeamParameters;
+
 import java.util.HashMap;
 import java.util.Map;
-
 
 public class HashCollisionAnalysis {
 
@@ -20,7 +21,7 @@ public class HashCollisionAnalysis {
 
     private static void runTrial(int numberOfKeys) {
 
-        int capacity = 16; // HashTable's DEFAULT_CAPACITY
+        int capacity = TeamParameters.HASH_CAPACITY; // Prime initial capacity (103)
         int size = 0;
         int collisions = 0;
 
@@ -33,7 +34,7 @@ public class HashCollisionAnalysis {
 
             // Resize check - same trigger condition as HashTable.put()
             if ((double) (size + 1) / capacity > LOAD_FACTOR) {
-                capacity *= 2;
+                capacity = HashTable.nextPrime(capacity * 2);
                 collisions = 0;
                 bucketCounts.clear();
 
@@ -62,18 +63,18 @@ public class HashCollisionAnalysis {
         double loadFactor = (double) size / capacity;
 
         System.out.println("---- " + numberOfKeys + " keys inserted ----");
-        System.out.println("Final table capacity: " + capacity);
+        System.out.println("Final table capacity: " + capacity + (HashTable.isPrime(capacity) ? " (Prime)" : ""));
         System.out.println("Final load factor: " + String.format("%.2f", loadFactor));
         System.out.println("Total collisions: " + collisions);
         System.out.println();
     }
 
     /**
-     * Same spreading formula as HashTable.indexFor() - copied here on purpose
+     * Same spreading formula as HashTable.indexFor() - incorporating TeamParameters.HASH_SEED (6802)
      * so this script's numbers match the real HashTable behavior exactly.
      */
     private static int indexFor(String key, int capacity) {
-        int hash = key.hashCode();
+        int hash = key.hashCode() ^ TeamParameters.HASH_SEED;
         hash ^= (hash >>> 16);
         return (hash & 0x7fffffff) % capacity;
     }
