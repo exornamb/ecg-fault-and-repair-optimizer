@@ -59,6 +59,21 @@ public class Fault implements Comparable<Fault> {
         }
     }
 
+    /**
+     * Returns the urgency score weighted by Michelle's index parameter (URGENCY_WEIGHT = 1.4).
+     */
+    public double getWeightedUrgency() {
+        return this.urgency * com.g15.dsa.database.TeamParameters.URGENCY_WEIGHT;
+    }
+
+    /**
+     * Calculates the composite dispatch score balancing weighted urgency and penalized travel distance.
+     */
+    public double getDispatchScore(double roadDistanceKm) {
+        double effectiveDist = Math.max(0.1, roadDistanceKm * com.g15.dsa.database.TeamParameters.ROAD_PENALTY);
+        return getWeightedUrgency() / effectiveDist;
+    }
+
     /** Higher urgency number = higher priority (dispatched first). */
     @Override
     public int compareTo(Fault other) {

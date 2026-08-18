@@ -76,8 +76,14 @@ ecg-fault-and-repair-optimizer/
 ├── reports/
 │   ├── ECG_Smart_Dispatch_DSA_Technical_Report_With_Performance_Analysis.docx
 │   ├── Joint_DSA_Project_Checklist_Cover_Sheet.docx
+│   ├── asymptotic-complexity-and-empirical-analysis.md # Big O, Big Theta, Big Omega tying theory to graphs
+│   ├── primitive-operations-and-brute-force-analysis.md # Primitive op counts (best/avg/worst) + brute-force infeasibility
+│   ├── data-dictionary.md             # Complete data dictionary for all tables, CSVs, and parameters
+│   ├── trace-tables.md                # 6 required algorithm execution trace tables
 │   ├── proofs-and-counterexamples.md
 │   ├── pseudocode-and-flowcharts.md
+│   ├── collision-statistics-writeup.md
+│   ├── scheduling-and-indexing-demonstrations.md
 │   ├── ghana-localisation-note.md
 │   ├── development-log.md
 │   ├── ai-assistance-acknowledgement.md

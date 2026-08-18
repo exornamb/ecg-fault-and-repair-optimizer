@@ -1,5 +1,7 @@
 package com.g15.dsa.structures;
 
+import com.g15.dsa.database.TeamParameters;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -10,7 +12,9 @@ public class HashTable<K, V> {
     private int size;
     private int collisionCount;
 
-    private static final int DEFAULT_CAPACITY = 16;
+    // Derived from Michelle's index (22396802): next_prime(100 + (22396802 % 50)) = 103
+    public static final int DEFAULT_CAPACITY = TeamParameters.HASH_CAPACITY; // 103
+    public static final int HASH_SEED = TeamParameters.HASH_SEED;           // 6802
     private static final double LOAD_FACTOR = 0.75;
 
     public HashTable() {
@@ -154,13 +158,19 @@ public class HashTable<K, V> {
 
     private int indexFor(K key) {
         if (key == null) return 0;
-        return Math.abs(key.hashCode()) % table.length;
+        // Hash computation using Michelle's index-derived HASH_SEED (6802)
+        int h = key.hashCode() ^ HASH_SEED;
+        h ^= (h >>> 16);
+        return (h & 0x7fffffff) % table.length;
     }
 
     @SuppressWarnings("unchecked")
     private void resize() {
         Entry<K, V>[] oldTable = table;
-        table = new Entry[oldTable.length * 2];
+        // Resize to the next prime number after doubling to maintain prime capacity
+        int targetCapacity = oldTable.length * 2;
+        int newCapacity = nextPrime(targetCapacity);
+        table = new Entry[newCapacity];
         size = 0;
         collisionCount = 0;
 
@@ -171,5 +181,30 @@ public class HashTable<K, V> {
                 curr = curr.next;
             }
         }
+    }
+
+    /**
+     * Finds the next prime number greater than or equal to n.
+     */
+    public static int nextPrime(int n) {
+        if (n <= 2) return 2;
+        int prime = (n % 2 == 0) ? n + 1 : n;
+        while (!isPrime(prime)) {
+            prime += 2;
+        }
+        return prime;
+    }
+
+    /**
+     * Checks if a number is prime.
+     */
+    public static boolean isPrime(int n) {
+        if (n < 2) return false;
+        if (n == 2 || n == 3) return true;
+        if (n % 2 == 0 || n % 3 == 0) return false;
+        for (int i = 5; (long) i * i <= n; i += 6) {
+            if (n % i == 0 || n % (i + 2) == 0) return false;
+        }
+        return true;
     }
 }

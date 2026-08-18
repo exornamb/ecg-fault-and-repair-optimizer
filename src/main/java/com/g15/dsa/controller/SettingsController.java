@@ -30,6 +30,18 @@ public class SettingsController {
 
 
     // =========================
+    // ALGORITHM PARAMETERS & DB
+    // =========================
+
+    @FXML private javafx.scene.control.Label lblHashCapacity;
+    @FXML private javafx.scene.control.Label lblHashSeed;
+    @FXML private javafx.scene.control.Label lblUrgencyWeight;
+    @FXML private javafx.scene.control.Label lblRoadPenalty;
+    @FXML private javafx.scene.control.Label lblBTreeT;
+    @FXML private javafx.scene.control.Label lblKnapsackCap;
+    @FXML private javafx.scene.control.TextArea dbStatusArea;
+
+    // =========================
     // NOTIFICATIONS
     // =========================
 
@@ -70,7 +82,56 @@ public class SettingsController {
 
         loadDefaultSettings();
 
+        populateAlgorithmParameters();
+
+        refreshDbStatus();
+
         playEntranceAnimations();
+    }
+
+    private void populateAlgorithmParameters() {
+        if (lblHashCapacity != null) {
+            lblHashCapacity.setText(String.valueOf(com.g15.dsa.database.TeamParameters.HASH_CAPACITY) + " (Prime)");
+        }
+        if (lblHashSeed != null) {
+            lblHashSeed.setText(String.valueOf(com.g15.dsa.database.TeamParameters.HASH_SEED));
+        }
+        if (lblUrgencyWeight != null) {
+            lblUrgencyWeight.setText(String.valueOf(com.g15.dsa.database.TeamParameters.URGENCY_WEIGHT));
+        }
+        if (lblRoadPenalty != null) {
+            lblRoadPenalty.setText(String.valueOf(com.g15.dsa.database.TeamParameters.ROAD_PENALTY) + "x");
+        }
+        if (lblBTreeT != null) {
+            lblBTreeT.setText("3 (Degree)");
+        }
+        if (lblKnapsackCap != null) {
+            lblKnapsackCap.setText("50 kg");
+        }
+    }
+
+    @FXML
+    public void onRefreshDb() {
+        refreshDbStatus();
+    }
+
+    private void refreshDbStatus() {
+        if (dbStatusArea == null) return;
+        try {
+            boolean connected = com.g15.dsa.database.DatabaseConnection.isAvailable();
+            if (connected) {
+                dbStatusArea.setText("✓ PostgreSQL Database Connected Successfully.\n" +
+                        "• Host/URL: Available\n" +
+                        "• Mode: Live JDBC Database Operations\n" +
+                        "• Seed: Accra/Legon Outage Grid");
+            } else {
+                dbStatusArea.setText("⚠ Offline / CSV Fallback Mode Active.\n" +
+                        "• PostgreSQL database not reachable.\n" +
+                        "• All operations automatically using data/*.csv offline seed files.");
+            }
+        } catch (Exception e) {
+            dbStatusArea.setText("Offline CSV Fallback Mode Active (Database uninitialized).");
+        }
     }
 
 

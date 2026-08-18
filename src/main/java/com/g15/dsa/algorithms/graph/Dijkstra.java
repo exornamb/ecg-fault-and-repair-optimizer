@@ -76,6 +76,10 @@ public class Dijkstra {
         }
     }
 
+    public static Result shortestPath(Graph graph, int source) {
+        return shortestPaths(graph, source);
+    }
+
     public static Result shortestPaths(Graph graph, int source) {
         validateVertex(graph, source);
 

@@ -94,19 +94,44 @@ public class HashTableTest {
     }
 
     @Test
-    void testResize_triggeredByManyInserts_stillFindsAllKeys() {
-        // Default capacity is 16, load factor 0.75 -> resize kicks in after ~12 entries.
-        // Insert enough entries to force at least one resize and confirm nothing gets lost.
+    void testDefaultCapacity_matchesTeamParametersPrime() {
+        HashTable<String, Integer> table = new HashTable<>();
+        assertEquals(com.g15.dsa.database.TeamParameters.HASH_CAPACITY, table.capacity());
+        assertTrue(HashTable.isPrime(table.capacity()));
+    }
+
+    @Test
+    void testResize_triggeredByManyInserts_resizesToNextPrimeAndRetainsKeys() {
+        // Default capacity is 103, load factor 0.75 -> resize kicks in after ~78 entries.
+        // Target capacity: next_prime(103 * 2 = 206) = 211.
         HashTable<Integer, String> table = new HashTable<>();
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 150; i++) {
             table.put(i, "value" + i);
         }
 
-        assertEquals(50, table.size());
-        for (int i = 0; i < 50; i++) {
+        assertEquals(150, table.size());
+        assertEquals(211, table.capacity());
+        assertTrue(HashTable.isPrime(table.capacity()));
+
+        for (int i = 0; i < 150; i++) {
             assertEquals("value" + i, table.get(i));
         }
+    }
+
+    @Test
+    void testPrimeHelperMethods() {
+        assertTrue(HashTable.isPrime(2));
+        assertTrue(HashTable.isPrime(3));
+        assertTrue(HashTable.isPrime(5));
+        assertTrue(HashTable.isPrime(103));
+        assertTrue(HashTable.isPrime(211));
+        assertFalse(HashTable.isPrime(4));
+        assertFalse(HashTable.isPrime(100));
+        assertFalse(HashTable.isPrime(206));
+
+        assertEquals(103, HashTable.nextPrime(102));
+        assertEquals(211, HashTable.nextPrime(206));
     }
 
     // ---------- INVALID / EDGE CASES ----------
