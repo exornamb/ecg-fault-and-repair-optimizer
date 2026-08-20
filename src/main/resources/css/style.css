@@ -1260,3 +1260,61 @@
 
     -fx-translate-x: 3;
 }
+
+/*==========================================================
+    URGENCY ROW STRIPES (color down the left edge of each row)
+==========================================================*/
+
+.table-row-cell.row-critical {
+    -fx-border-color: #E53E3E transparent transparent transparent;
+    -fx-border-width: 0 0 0 4;
+}
+
+.table-row-cell.row-high {
+    -fx-border-color: #F59E0B transparent transparent transparent;
+    -fx-border-width: 0 0 0 4;
+}
+
+.table-row-cell.row-medium {
+    -fx-border-color: #D69E2E transparent transparent transparent;
+    -fx-border-width: 0 0 0 4;
+}
+
+.table-row-cell.row-low {
+    -fx-border-color: #3B82F6 transparent transparent transparent;
+    -fx-border-width: 0 0 0 4;
+}
+
+.table-row-cell.row-verylow {
+    -fx-border-color: #94A3B8 transparent transparent transparent;
+    -fx-border-width: 0 0 0 4;
+}
+
+/* keep the stripe visible even on hover/selected rows */
+.table-row-cell.row-critical:hover,
+.table-row-cell.row-critical:selected {
+    -fx-border-color: #E53E3E transparent transparent transparent;
+    -fx-border-width: 0 0 0 4;
+}
+
+/*==========================================================
+    CRITICAL BADGE GLOW
+==========================================================*/
+
+.critical-badge-glow {
+    -fx-effect: dropshadow(gaussian, rgba(229,62,62,0.45), 8, 0.4, 0, 0);
+}
+
+/*==========================================================
+    SIDEBAR POLISH: bigger icon feel, tighter active state
+==========================================================*/
+
+.menu-button {
+    -fx-font-size: 14.5px;
+    -fx-background-radius: 12;
+}
+
+.menu-button.active-menu-button {
+    -fx-background-radius: 10;
+    -fx-border-width: 0 0 0 5;
+}

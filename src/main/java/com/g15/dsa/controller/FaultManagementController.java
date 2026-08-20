@@ -86,17 +86,6 @@ public class FaultManagementController {
         playEntryAnimations();
     }
 
-    private void setupTableColumns() {
-        if (faultIdColumn != null) faultIdColumn.setCellValueFactory(new PropertyValueFactory<>("faultId"));
-        if (areaColumn != null) areaColumn.setCellValueFactory(new PropertyValueFactory<>("area"));
-        if (categoryColumn != null) categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
-        if (priorityColumn != null) priorityColumn.setCellValueFactory(new PropertyValueFactory<>("priorityText"));
-        if (crewColumn != null) crewColumn.setCellValueFactory(new PropertyValueFactory<>("crew"));
-        if (statusColumn != null) statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-
-        setupPriorityColumn();
-        setupStatusColumn();
-    }
 
     private void setupFilterOptions() {
         if (categoryFilter != null) {
@@ -394,17 +383,24 @@ public class FaultManagementController {
                 switch (priority.toUpperCase()) {
                     case "CRITICAL":
                         badge.setStyle("-fx-background-color: #FEE2E2; -fx-text-fill: #B91C1C; -fx-background-radius: 20; -fx-font-weight: bold;");
+                        if (!badge.getStyleClass().contains("critical-badge-glow")) {
+                            badge.getStyleClass().add("critical-badge-glow");
+                        }
                         break;
                     case "HIGH":
+                        badge.getStyleClass().remove("critical-badge-glow");
                         badge.setStyle("-fx-background-color: #FFEDD5; -fx-text-fill: #C2410C; -fx-background-radius: 20; -fx-font-weight: bold;");
                         break;
                     case "MEDIUM":
+                        badge.getStyleClass().remove("critical-badge-glow");
                         badge.setStyle("-fx-background-color: #FEF3C7; -fx-text-fill: #A16207; -fx-background-radius: 20; -fx-font-weight: bold;");
                         break;
                     case "LOW":
+                        badge.getStyleClass().remove("critical-badge-glow");
                         badge.setStyle("-fx-background-color: #DBEAFE; -fx-text-fill: #1D4ED8; -fx-background-radius: 20; -fx-font-weight: bold;");
                         break;
                     default:
+                        badge.getStyleClass().remove("critical-badge-glow");
                         badge.setStyle("-fx-background-color: #F1F5F9; -fx-text-fill: #64748B; -fx-background-radius: 20; -fx-font-weight: bold;");
                 }
                 setGraphic(badge);
@@ -430,5 +426,40 @@ public class FaultManagementController {
             ParallelTransition pt = new ParallelTransition(fade, slide);
             pt.play();
         }
+    }
+
+    private void setupTableColumns() {
+        if (faultIdColumn != null) faultIdColumn.setCellValueFactory(new PropertyValueFactory<>("faultId"));
+        if (areaColumn != null) areaColumn.setCellValueFactory(new PropertyValueFactory<>("area"));
+        if (categoryColumn != null) categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+        if (priorityColumn != null) priorityColumn.setCellValueFactory(new PropertyValueFactory<>("priorityText"));
+        if (crewColumn != null) crewColumn.setCellValueFactory(new PropertyValueFactory<>("crew"));
+        if (statusColumn != null) statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        setupPriorityColumn();
+        setupStatusColumn();
+        setupRowStripes();
+    }
+
+    // New method: colors the left edge of each row based on urgency
+    private void setupRowStripes() {
+        if (faultTable == null) return;
+        faultTable.setRowFactory(tv -> new TableRow<Fault>() {
+            @Override
+            protected void updateItem(Fault fault, boolean empty) {
+                super.updateItem(fault, empty);
+                getStyleClass().removeAll("row-critical", "row-high", "row-medium", "row-low", "row-verylow");
+                if (empty || fault == null) {
+                    return;
+                }
+                switch (fault.getPriorityText().toUpperCase()) {
+                    case "CRITICAL": getStyleClass().add("row-critical"); break;
+                    case "HIGH": getStyleClass().add("row-high"); break;
+                    case "MEDIUM": getStyleClass().add("row-medium"); break;
+                    case "LOW": getStyleClass().add("row-low"); break;
+                    default: getStyleClass().add("row-verylow");
+                }
+            }
+        });
     }
 }

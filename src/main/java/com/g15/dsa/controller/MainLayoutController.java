@@ -24,8 +24,8 @@ public class MainLayoutController {
     @FXML
     private Button btnDispatch;
 
-    @FXML
-    private Button btnDefense;
+//    @FXML
+//    private Button btnDefense;
 
     @FXML
     private Button btnSettings;
@@ -52,10 +52,10 @@ public class MainLayoutController {
         loadView("/fxml/views/dispatch.fxml", btnDispatch);
     }
 
-    @FXML
-    public void showDefense() {
-        loadView("/fxml/views/defense.fxml", btnDefense);
-    }
+//    @FXML
+//    public void showDefense() {
+//        loadView("/fxml/views/defense.fxml", btnDefense);
+//    }
 
     @FXML
     public void showSettings() {

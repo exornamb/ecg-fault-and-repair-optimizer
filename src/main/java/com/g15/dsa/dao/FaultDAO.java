@@ -196,16 +196,20 @@ public class FaultDAO {
                 while ((line = br.readLine()) != null) {
                     if (header) { header = false; continue; }
                     String[] cols = line.split(",", -1);
-                    if (cols.length >= 7) {
+                    // Real column order: 0=requestId 1=area 2=locationId 3=category
+                    // 4=urgency 5=timeSubmitted 6=deadline 7=status 8=crew(optional)
+                    if (cols.length >= 8) {
                         try {
+                            String crew = cols.length >= 9 && !cols[8].trim().isEmpty()
+                                    ? cols[8].trim() : "Unassigned";
                             Fault f = new Fault(
                                 id++,
                                 cols[0].trim(),
-                                cols[2].trim(),
+                                cols[1].trim(),
                                 cols[3].trim(),
                                 Integer.parseInt(cols[4].trim()),
-                                cols[5].trim(),
-                                cols[6].trim()
+                                crew,
+                                cols[7].trim()
                             );
                             faults.add(f);
                         } catch (NumberFormatException ignored) {}
@@ -217,8 +221,7 @@ public class FaultDAO {
             } catch (IOException ignored) {}
         }
         return faults;
-    }
-
+}
     // ========================================================
     // HELPER
     // ========================================================
