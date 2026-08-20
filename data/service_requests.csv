@@ -1,3 +1,4 @@
+request_id,source_location_id,destination_location_id,category,urgency,time_submitted,deadline,status
 9,ECG customer report - Dzorwulu,48,Fallen Conductor,3,2026-08-01T14:23:23.875298200,2026-08-02T03:23:23.875298200,OPEN,
 11,ECG customer report - Evandy Hostel,43,Fallen Conductor,4,2026-08-07T06:23:23.875298200,2026-08-07T10:23:23.875298200,OPEN,
 12,ECG customer report - Presec Legon,17,Meter Fault,2,2026-08-03T23:23:23.875298200,2026-08-04T07:23:23.875298200,OPEN,

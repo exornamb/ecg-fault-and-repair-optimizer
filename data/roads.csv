@@ -1,3 +1,4 @@
+road_id,from_location_id,to_location_id,distance_km,travel_time_min,condition_weight
 0,0,1,1.3187669469006202,19,4
 1,1,0,5.236283164530095,7,2
 2,1,2,6.510717965252546,34,2
