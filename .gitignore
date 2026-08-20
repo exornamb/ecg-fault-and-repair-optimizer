@@ -25,3 +25,5 @@ replay_pid*
 
 #configuration properties for the environment used
 *config.properties
+
+target/

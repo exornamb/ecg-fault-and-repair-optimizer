@@ -1,3 +1,4 @@
+location_id,name,area,location_type,x_coord,y_coord
 0,Legon Main Gate,Legon,Campus zone,5.604526756733229,-0.21229015573394494
 1,Balme Library,Legon,Campus zone,5.610299807589949,-0.17862238864272817
 2,Commonwealth Hall,Legon,Campus zone,5.637863134534455,-0.15761285319272306
