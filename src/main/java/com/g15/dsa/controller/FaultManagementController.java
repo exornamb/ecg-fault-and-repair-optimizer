@@ -2,6 +2,7 @@ package com.g15.dsa.controller;
 
 import com.g15.dsa.dao.FaultDAO;
 import com.g15.dsa.dao.ResourceDAO;
+import com.g15.dsa.dao.AuditEventDAO;
 import com.g15.dsa.model.Fault;
 import com.g15.dsa.service.FaultService;
 import javafx.animation.FadeTransition;
@@ -268,6 +269,14 @@ public class FaultManagementController {
         if (result.isPresent() && result.get() == ButtonType.OK) {
             FaultDAO dao = new FaultDAO();
             dao.deleteFault(selectedFault.getId());
+            
+            new AuditEventDAO().logEvent(
+                "DELETE",
+                "service_requests",
+                selectedFault.getFaultId(),
+                "Deleted fault ticket for " + selectedFault.getArea()
+            );
+
             refreshTable();
         }
     }
@@ -292,6 +301,13 @@ public class FaultManagementController {
         FaultDAO dao = new FaultDAO();
         dao.updateFault(selectedFault);
         resourceDAO.setCrewBusy(bestCrew);
+
+        new AuditEventDAO().logEvent(
+            "DISPATCH",
+            "service_requests",
+            selectedFault.getFaultId(),
+            "Dispatched " + bestCrew + " to " + selectedFault.getArea()
+        );
 
         refreshTable();
 

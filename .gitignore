@@ -27,3 +27,10 @@ replay_pid*
 *config.properties
 
 target/
+
+# IDE workspace settings (developer-specific, not for sharing)
+.idea/
+.vscode/
+
+# Local environment scripts (machine-specific paths, not required for grading)
+scripts/
