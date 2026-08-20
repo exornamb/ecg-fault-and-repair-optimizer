@@ -4,6 +4,7 @@ import com.g15.dsa.algorithms.searching.BinarySearch;
 import com.g15.dsa.algorithms.searching.LinearSearch;
 import com.g15.dsa.algorithms.sorting.*;
 import com.g15.dsa.structures.*;
+import com.g15.dsa.dao.AlgorithmRunDAO;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -40,6 +41,7 @@ public class Experiments {
     // ===========================================================
     static void runSearchExperiment() throws IOException {
         System.out.println("[1/6] Search Comparison...");
+        AlgorithmRunDAO runDao = new AlgorithmRunDAO();
         try (FileWriter fw = new FileWriter("data/search_experiment.csv")) {
             fw.write("algorithm,input_size,run,time_ms\n");
             for (int n : SIZES) {
@@ -49,13 +51,17 @@ public class Experiments {
                 for (int r = 0; r < RUNS; r++) {
                     long t0 = System.nanoTime();
                     LinearSearch.search(arr, target);
-                    double ms = (System.nanoTime() - t0) / 1_000_000.0;
+                    long elapsedNs1 = System.nanoTime() - t0;
+                    double ms = elapsedNs1 / 1_000_000.0;
                     fw.write(String.format("LinearSearch,%d,%d,%.4f%n", n, r + 1, ms));
+                    runDao.insertRun("LinearSearch", n, elapsedNs1, 0, r + 1);
 
                     t0 = System.nanoTime();
                     BinarySearch.search(arr, target);
-                    ms = (System.nanoTime() - t0) / 1_000_000.0;
+                    long elapsedNs2 = System.nanoTime() - t0;
+                    ms = elapsedNs2 / 1_000_000.0;
                     fw.write(String.format("BinarySearch,%d,%d,%.4f%n", n, r + 1, ms));
+                    runDao.insertRun("BinarySearch", n, elapsedNs2, 0, r + 1);
                 }
             }
         }
@@ -67,6 +73,7 @@ public class Experiments {
     // ===========================================================
     static void runSortExperiment() throws IOException {
         System.out.println("[2/6] Sorting Comparison...");
+        AlgorithmRunDAO runDao = new AlgorithmRunDAO();
         try (FileWriter fw = new FileWriter("data/sort_experiment.csv")) {
             fw.write("algorithm,input_size,run,time_ms\n");
             for (int n : SIZES) {
@@ -74,20 +81,24 @@ public class Experiments {
                     Integer[] arr;
 
                     arr = generateRandomIntegerArray(n);
-                    long t = System.nanoTime(); SelectionSort.sort(arr); double ms = (System.nanoTime()-t)/1_000_000.0;
+                    long t = System.nanoTime(); SelectionSort.sort(arr); long elapsed = System.nanoTime() - t; double ms = elapsed/1_000_000.0;
                     fw.write(String.format("SelectionSort,%d,%d,%.4f%n", n, r+1, ms));
+                    runDao.insertRun("SelectionSort", n, elapsed, 0, r + 1);
 
                     arr = generateRandomIntegerArray(n);
-                    t = System.nanoTime(); InsertionSort.sort(arr); ms = (System.nanoTime()-t)/1_000_000.0;
+                    t = System.nanoTime(); InsertionSort.sort(arr); elapsed = System.nanoTime() - t; ms = elapsed/1_000_000.0;
                     fw.write(String.format("InsertionSort,%d,%d,%.4f%n", n, r+1, ms));
+                    runDao.insertRun("InsertionSort", n, elapsed, 0, r + 1);
 
                     arr = generateRandomIntegerArray(n);
-                    t = System.nanoTime(); MergeSort.sort(arr); ms = (System.nanoTime()-t)/1_000_000.0;
+                    t = System.nanoTime(); MergeSort.sort(arr); elapsed = System.nanoTime() - t; ms = elapsed/1_000_000.0;
                     fw.write(String.format("MergeSort,%d,%d,%.4f%n", n, r+1, ms));
+                    runDao.insertRun("MergeSort", n, elapsed, 0, r + 1);
 
                     arr = generateRandomIntegerArray(n);
-                    t = System.nanoTime(); QuickSort.sort(arr); ms = (System.nanoTime()-t)/1_000_000.0;
+                    t = System.nanoTime(); QuickSort.sort(arr); elapsed = System.nanoTime() - t; ms = elapsed/1_000_000.0;
                     fw.write(String.format("QuickSort,%d,%d,%.4f%n", n, r+1, ms));
+                    runDao.insertRun("QuickSort", n, elapsed, 0, r + 1);
                 }
             }
         }
@@ -99,18 +110,22 @@ public class Experiments {
     // ===========================================================
     static void runHashExperiment() throws IOException {
         System.out.println("[3/6] Hash Table Load Factor & Collisions...");
+        AlgorithmRunDAO runDao = new AlgorithmRunDAO();
         try (FileWriter fw = new FileWriter("data/hash_experiment.csv")) {
             fw.write("keys_inserted,final_capacity,load_factor,collisions\n");
             for (int n : HASH_SIZES) {
+                long t0 = System.nanoTime();
                 HashTable<Integer, Integer> ht = new HashTable<>();
                 for (int i = 0; i < n; i++) {
                     ht.put(RANDOM.nextInt(n * 10), i);
                 }
+                long elapsed = System.nanoTime() - t0;
                 fw.write(String.format("%d,%d,%.4f,%d%n",
                     n,
                     ht.capacity(),
                     (double) ht.size() / ht.capacity(),
                     ht.getCollisionCount()));
+                runDao.insertRun("HashTablePut", n, elapsed, 0, 1);
             }
         }
         System.out.println("  Done -> data/hash_experiment.csv");
@@ -121,6 +136,7 @@ public class Experiments {
     // ===========================================================
     static void runHeapExperiment() throws IOException {
         System.out.println("[4/6] Heap Priority Queue Dispatch...");
+        AlgorithmRunDAO runDao = new AlgorithmRunDAO();
         try (FileWriter fw = new FileWriter("data/heap_experiment.csv")) {
             fw.write("operation,input_size,run,time_ms\n");
             for (int n : HASH_SIZES) {
@@ -130,13 +146,17 @@ public class Experiments {
 
                     long t = System.nanoTime();
                     for (Integer item : items) pq.insert(item);
-                    double ms = (System.nanoTime()-t)/1_000_000.0;
+                    long elapsedInsert = System.nanoTime() - t;
+                    double ms = elapsedInsert/1_000_000.0;
                     fw.write(String.format("insert,%d,%d,%.4f%n", n, r+1, ms));
+                    runDao.insertRun("HeapInsert", n, elapsedInsert, 0, r + 1);
 
                     t = System.nanoTime();
                     while (!pq.isEmpty()) pq.extractMin();
-                    ms = (System.nanoTime()-t)/1_000_000.0;
+                    long elapsedExtract = System.nanoTime() - t;
+                    ms = elapsedExtract/1_000_000.0;
                     fw.write(String.format("extractAll,%d,%d,%.4f%n", n, r+1, ms));
+                    runDao.insertRun("HeapExtractAll", n, elapsedExtract, 0, r + 1);
                 }
             }
         }
@@ -148,6 +168,7 @@ public class Experiments {
     // ===========================================================
     static void runTreeComparison() throws IOException {
         System.out.println("[5/6] BST vs Red-Black Tree Comparison...");
+        AlgorithmRunDAO runDao = new AlgorithmRunDAO();
         try (FileWriter fw = new FileWriter("data/tree_experiment.csv")) {
             fw.write("tree_type,input_size,run,insert_ms,search_ms,height\n");
             for (int n : SIZES) {
@@ -157,20 +178,28 @@ public class Experiments {
                     BST<Integer> bst = new BST<>();
                     long t = System.nanoTime();
                     for (Integer x : items) bst.insert(x);
-                    double insertMs = (System.nanoTime()-t)/1_000_000.0;
+                    long elapsedBstInsert = System.nanoTime() - t;
+                    double insertMs = elapsedBstInsert/1_000_000.0;
                     t = System.nanoTime();
                     bst.contains(items[RANDOM.nextInt(n)]);
-                    double searchMs = (System.nanoTime()-t)/1_000_000.0;
+                    long elapsedBstSearch = System.nanoTime() - t;
+                    double searchMs = elapsedBstSearch/1_000_000.0;
                     fw.write(String.format("BST,%d,%d,%.4f,%.4f,%d%n", n, r+1, insertMs, searchMs, bst.height()));
+                    runDao.insertRun("BSTInsert", n, elapsedBstInsert, 0, r + 1);
+                    runDao.insertRun("BSTSearch", n, elapsedBstSearch, 0, r + 1);
 
                     RedBlackTree<Integer> rbt = new RedBlackTree<>();
                     t = System.nanoTime();
                     for (Integer x : items) rbt.insert(x);
-                    insertMs = (System.nanoTime()-t)/1_000_000.0;
+                    long elapsedRbtInsert = System.nanoTime() - t;
+                    insertMs = elapsedRbtInsert/1_000_000.0;
                     t = System.nanoTime();
                     rbt.contains(items[RANDOM.nextInt(n)]);
-                    searchMs = (System.nanoTime()-t)/1_000_000.0;
+                    long elapsedRbtSearch = System.nanoTime() - t;
+                    searchMs = elapsedRbtSearch/1_000_000.0;
                     fw.write(String.format("RedBlackTree,%d,%d,%.4f,%.4f,%d%n", n, r+1, insertMs, searchMs, rbt.height()));
+                    runDao.insertRun("RedBlackTreeInsert", n, elapsedRbtInsert, 0, r + 1);
+                    runDao.insertRun("RedBlackTreeSearch", n, elapsedRbtSearch, 0, r + 1);
                 }
             }
         }
@@ -182,6 +211,7 @@ public class Experiments {
     // ===========================================================
     static void runGraphExperiment() throws IOException {
         System.out.println("[6/6] Graph Algorithm Timing...");
+        AlgorithmRunDAO runDao = new AlgorithmRunDAO();
         try (FileWriter fw = new FileWriter("data/graph_experiment.csv")) {
             fw.write("algorithm,vertices,edges,run,time_ms\n");
             for (int v : GRAPH_SIZES) {
@@ -189,20 +219,25 @@ public class Experiments {
                 for (int r = 0; r < RUNS; r++) {
                     long t; double ms;
 
-                    t = System.nanoTime(); com.g15.dsa.algorithms.graph.BFS.traverse(g, 0); ms = (System.nanoTime()-t)/1_000_000.0;
+                    t = System.nanoTime(); com.g15.dsa.algorithms.graph.BFS.traverse(g, 0); long elapsedBfs = System.nanoTime() - t; ms = elapsedBfs/1_000_000.0;
                     fw.write(String.format("BFS,%d,%d,%d,%.4f%n", v, v*3, r+1, ms));
+                    runDao.insertRun("BFS", v, elapsedBfs, 0, r + 1);
 
-                    t = System.nanoTime(); com.g15.dsa.algorithms.graph.DFS.traverse(g, 0); ms = (System.nanoTime()-t)/1_000_000.0;
+                    t = System.nanoTime(); com.g15.dsa.algorithms.graph.DFS.traverse(g, 0); long elapsedDfs = System.nanoTime() - t; ms = elapsedDfs/1_000_000.0;
                     fw.write(String.format("DFS,%d,%d,%d,%.4f%n", v, v*3, r+1, ms));
+                    runDao.insertRun("DFS", v, elapsedDfs, 0, r + 1);
 
-                    t = System.nanoTime(); com.g15.dsa.algorithms.graph.Dijkstra.shortestPaths(g, 0); ms = (System.nanoTime()-t)/1_000_000.0;
+                    t = System.nanoTime(); com.g15.dsa.algorithms.graph.Dijkstra.shortestPaths(g, 0); long elapsedDijkstra = System.nanoTime() - t; ms = elapsedDijkstra/1_000_000.0;
                     fw.write(String.format("Dijkstra,%d,%d,%d,%.4f%n", v, v*3, r+1, ms));
+                    runDao.insertRun("Dijkstra", v, elapsedDijkstra, 0, r + 1);
 
-                    t = System.nanoTime(); com.g15.dsa.algorithms.graph.Prim.minimumSpanningTree(g, 0); ms = (System.nanoTime()-t)/1_000_000.0;
+                    t = System.nanoTime(); com.g15.dsa.algorithms.graph.Prim.minimumSpanningTree(g, 0); long elapsedPrim = System.nanoTime() - t; ms = elapsedPrim/1_000_000.0;
                     fw.write(String.format("Prim,%d,%d,%d,%.4f%n", v, v*3, r+1, ms));
+                    runDao.insertRun("Prim", v, elapsedPrim, 0, r + 1);
 
-                    t = System.nanoTime(); com.g15.dsa.algorithms.graph.Kruskal.minimumSpanningTree(g); ms = (System.nanoTime()-t)/1_000_000.0;
+                    t = System.nanoTime(); com.g15.dsa.algorithms.graph.Kruskal.minimumSpanningTree(g); long elapsedKruskal = System.nanoTime() - t; ms = elapsedKruskal/1_000_000.0;
                     fw.write(String.format("Kruskal,%d,%d,%d,%.4f%n", v, v*3, r+1, ms));
+                    runDao.insertRun("Kruskal", v, elapsedKruskal, 0, r + 1);
                 }
             }
         }

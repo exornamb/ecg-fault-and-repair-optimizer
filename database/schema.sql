@@ -88,6 +88,7 @@ CREATE TABLE algorithm_runs (
     input_size       INTEGER      NOT NULL CHECK (input_size >= 0),
     time_ns          BIGINT       NOT NULL CHECK (time_ns >= 0),
     memory_kb        INTEGER      CHECK (memory_kb >= 0),
+    run_number       INTEGER      NOT NULL CHECK (run_number >= 0),
     date_run         TIMESTAMP    NOT NULL DEFAULT NOW()
 );
 
