@@ -14,13 +14,30 @@ public class MainApp extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main-layout.fxml"));
             Parent root = loader.load();
 
-            Scene scene = new Scene(root, 1280, 800);
+            Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
 
-            primaryStage.setTitle("ECG Dumsor Response & Repair Optimizer v2.0 — Group 15");
-            primaryStage.setMinWidth(1100);
-            primaryStage.setMinHeight(700);
+            // Size the window to 85% of the screen instead of a fixed 1280x800,
+            // so it looks right on both small laptops and large monitors.
+            javafx.geometry.Rectangle2D screenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
+            double width = screenBounds.getWidth() * 0.85;
+            double height = screenBounds.getHeight() * 0.85;
+
+            primaryStage.setTitle("ECG Dumsor Response & Repair Optimizer v2.0 - Group 15");
             primaryStage.setScene(scene);
+            primaryStage.setWidth(width);
+            primaryStage.setHeight(height);
+            primaryStage.setMinWidth(1000);
+            primaryStage.setMinHeight(650);
+            primaryStage.centerOnScreen();
+
+            // Make sure the whole app actually exits when the window is closed,
+            // instead of the process hanging around in the background.
+            primaryStage.setOnCloseRequest(event -> {
+                javafx.application.Platform.exit();
+                System.exit(0);
+            });
+
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();

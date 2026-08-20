@@ -55,7 +55,7 @@
             </Separator>
 
             <Label text="EXAMINATION SUITE" styleClass="nav-section-header"/>
-            <Button fx:id="btnDefense" text="🎓  Oral Defense Showcase" onAction="#showDefense" styleClass="nav-button" maxWidth="Infinity"/>
+<!--            <Button fx:id="btnDefense" text="🎓  Oral Defense Showcase" onAction="#showDefense" styleClass="nav-button" maxWidth="Infinity"/>-->
             <Button fx:id="btnSettings" text="⚙  Team Parameters" onAction="#showSettings" styleClass="nav-button" maxWidth="Infinity"/>
 
             <Region VBox.vgrow="ALWAYS"/>
