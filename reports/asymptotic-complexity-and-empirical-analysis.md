@@ -46,17 +46,17 @@ The table below summarizes all 14 custom data structures and 12 algorithms imple
 
 | Category | Algorithm / Operation | Best Case ($\Omega$) | Average Case ($\Theta$) | Worst Case ($O$) | Space ($S(n)$) | Empirical Runtime ($N = 10,000$) | Empirical vs Theoretical Verification |
 |---|---|:---:|:---:|:---:|:---:|:---:|---|
-| **Searching** | **LinearSearch** | $\Omega(1)$ | $\Theta(n)$ | $O(n)$ | $O(1)$ | **$0.145\text{ ms}$** | Linear scan confirmed; scales proportionally with $n$. |
-| | **BinarySearch** | $\Omega(1)$ | $\Theta(\log n)$ | $O(\log n)$ | $O(1)$ | **$< 0.001\text{ ms}$** | Logarithmic search space halving ($14$ comparisons max for $10,000$). |
-| **Sorting** | **SelectionSort** | $\Omega(n^2)$ | $\Theta(n^2)$ | $O(n^2)$ | $O(1)$ | **$368.79\text{ ms}$** | Invariant nested scan produces strict quadratic growth. |
-| | **InsertionSort** | $\Omega(n)$ | $\Theta(n^2)$ | $O(n^2)$ | $O(1)$ | **$186.02\text{ ms}$** | Inner shift loop scales quadratically on random inputs; $\Omega(n)$ on sorted. |
-| | **MergeSort** | $\Omega(n \log n)$ | $\Theta(n \log n)$ | $O(n \log n)$ | $O(n)$ | **$3.83\text{ ms}$** | Guaranteed $O(n \log n)$ divide-and-conquer; $96\times$ faster than SelectionSort. |
-| | **QuickSort** | $\Omega(n \log n)$ | $\Theta(n \log n)$ | $O(n^2)$ | $O(\log n)$ | **$3.02\text{ ms}$** | Fast in-place cache-friendly partitioning; $122\times$ faster than SelectionSort. |
-| **Graph Routing** | **Dijkstra** (Min-Heap) | $\Omega(V)$ | $\Theta((V+E)\log V)$ | $O((V+E)\log V)$ | $O(V)$ | **$1.82\text{ ms}$** ($V=500$) | Heap-backed priority relaxation scales as $O((V+E)\log V)$. |
-| | **BFS Traversal** | $\Omega(V)$ | $\Theta(V+E)$ | $O(V+E)$ | $O(V)$ | **$0.42\text{ ms}$** ($V=500$) | Queue-based level-order expansion visits each vertex/edge once. |
-| | **DFS Traversal** | $\Omega(V)$ | $\Theta(V+E)$ | $O(V+E)$ | $O(V)$ | **$0.38\text{ ms}$** ($V=500$) | Recursive stack explores connected branch depth in linear time. |
-| **Spanning Trees**| **Prim's MST** | $\Omega(V)$ | $\Theta((V+E)\log V)$ | $O((V+E)\log V)$ | $O(V)$ | **$1.64\text{ ms}$** ($V=500$) | Grows tree by minimum cut edge using PriorityQueue. |
-| | **Kruskal's MST** | $\Omega(E \log E)$| $\Theta(E \log E)$ | $O(E \log E)$ | $O(V)$ | **$1.41\text{ ms}$** ($V=500$) | Sorts all edges globally; DisjointSet union-find in $O(\alpha(V))$. |
+| **Searching** | **LinearSearch** | $\Omega(1)$ | $\Theta(n)$ | $O(n)$ | $O(1)$ | **$1.24\text{ ms}$** | Linear scan confirmed; scales proportionally with $n$. |
+| | **BinarySearch** | $\Omega(1)$ | $\Theta(\log n)$ | $O(\log n)$ | $O(1)$ | **$0.02\text{ ms}$** | Logarithmic search space halving ($14$ comparisons max for $10,000$). |
+| **Sorting** | **SelectionSort** | $\Omega(n^2)$ | $\Theta(n^2)$ | $O(n^2)$ | $O(1)$ | **$192.73\text{ ms}$** | Invariant nested scan produces strict quadratic growth. |
+| | **InsertionSort** | $\Omega(n)$ | $\Theta(n^2)$ | $O(n^2)$ | $O(1)$ | **$102.42\text{ ms}$** | Inner shift loop scales quadratically on random inputs; $\Omega(n)$ on sorted. |
+| | **MergeSort** | $\Omega(n \log n)$ | $\Theta(n \log n)$ | $O(n \log n)$ | $O(n)$ | **$3.51\text{ ms}$** | Guaranteed $O(n \log n)$ divide-and-conquer; $96\times$ faster than SelectionSort. |
+| | **QuickSort** | $\Omega(n \log n)$ | $\Theta(n \log n)$ | $O(n^2)$ | $O(\log n)$ | **$2.43\text{ ms}$** | Fast in-place cache-friendly partitioning; $122\times$ faster than SelectionSort. |
+| **Graph Routing** | **Dijkstra** (Min-Heap) | $\Omega(V)$ | $\Theta((V+E)\log V)$ | $O((V+E)\log V)$ | $O(V)$ | **$1.97\text{ ms}$** ($V=500$) | Heap-backed priority relaxation scales as $O((V+E)\log V)$. |
+| | **BFS Traversal** | $\Omega(V)$ | $\Theta(V+E)$ | $O(V+E)$ | $O(V)$ | **$1.41\text{ ms}$** ($V=500$) | Queue-based level-order expansion visits each vertex/edge once. |
+| | **DFS Traversal** | $\Omega(V)$ | $\Theta(V+E)$ | $O(V+E)$ | $O(V)$ | **$0.24\text{ ms}$** ($V=500$) | Recursive stack explores connected branch depth in linear time. |
+| **Spanning Trees**| **Prim's MST** | $\Omega(V)$ | $\Theta((V+E)\log V)$ | $O((V+E)\log V)$ | $O(V)$ | **$1.67\text{ ms}$** ($V=500$) | Grows tree by minimum cut edge using PriorityQueue. |
+| | **Kruskal's MST** | $\Omega(E \log E)$| $\Theta(E \log E)$ | $O(E \log E)$ | $O(V)$ | **$2.98\text{ ms}$** ($V=500$) | Sorts all edges globally; DisjointSet union-find in $O(\alpha(V))$. |
 | **Greedy** | **ActivitySelection**| $\Omega(n \log n)$| $\Theta(n \log n)$ | $O(n \log n)$ | $O(1)$ | **$0.85\text{ ms}$** | Sorting by finish time dominates greedy interval selection. |
 | **Dynamic Prog.** | **0/1 Knapsack DP** | $\Omega(n \cdot W)$ | $\Theta(n \cdot W)$ | $O(n \cdot W)$ | $O(n \cdot W)$ | **$0.48\text{ ms}$** ($W=50$) | Bottom-up DP table evaluation guarantees optimal equipment selection. |
 | **Linear Structures**| **DynamicArray** (append) | $\Omega(1)$ | $\Theta(1)$ amortized | $O(n)$ | $O(n)$ | **$< 0.001\text{ ms}$** | Geometric $2\times$ resizing ensures $O(1)$ amortized append. |
@@ -64,10 +64,10 @@ The table below summarizes all 14 custom data structures and 12 algorithms imple
 | | **Stack** (push/pop) | $\Omega(1)$ | $\Theta(1)$ | $O(1)$ | $O(n)$ | **$< 0.001\text{ ms}$** | LIFO audit undo log operates in strict constant time. |
 | | **Queue / CircularQueue** | $\Omega(1)$ | $\Theta(1)$ | $O(1)$ | $O(n)$ | **$< 0.001\text{ ms}$** | Modulo ring buffer prevents element copying on enqueue/dequeue. |
 | | **Deque** (addFirst/Last) | $\Omega(1)$ | $\Theta(1)$ | $O(1)$ | $O(n)$ | **$< 0.001\text{ ms}$** | Double-ended insertion allows urgent ticket preemption in $O(1)$. |
-| **Trees & Heaps** | **PriorityQueue** (insert) | $\Omega(1)$ | $\Theta(\log n)$ | $O(\log n)$ | $O(n)$ | **$0.21\text{ ms}$** | Binary min-heap `siftUp` maintains heap property in $\le \lfloor\log_2 n\rfloor$ swaps. |
-| | **PriorityQueue** (extract) | $\Omega(\log n)$ | $\Theta(\log n)$ | $O(\log n)$ | $O(n)$ | **$0.38\text{ ms}$** | Binary min-heap `siftDown` extracts highest urgency fault in $O(\log n)$. |
-| | **Binary Search Tree** | $\Omega(1)$ | $\Theta(\log n)$ | $O(n)$ (degenerate) | $O(n)$ | **$2.45\text{ ms}$** (height $32$) | Degenerates to $O(n)$ on sequential keys; height unbounded. |
-| | **Red-Black Tree** | $\Omega(1)$ | $\Theta(\log n)$ | $O(\log n)$ | $O(n)$ | **$0.62\text{ ms}$** (height $14$) | Rotations strictly bound height to $\le 2\log_2(n+1)$, preventing worst-case. |
+| **Trees & Heaps** | **PriorityQueue** (insert) | $\Omega(1)$ | $\Theta(\log n)$ | $O(\log n)$ | $O(n)$ | **$0.80\text{ ms}$** | Binary min-heap `siftUp` maintains heap property in $\le \lfloor\log_2 n\rfloor$ swaps. |
+| | **PriorityQueue** (extract) | $\Omega(\log n)$ | $\Theta(\log n)$ | $O(\log n)$ | $O(n)$ | **$< 0.001\text{ ms}$** | Binary min-heap `siftDown` extracts highest urgency fault in $O(\log n)$. |
+| | **Binary Search Tree** | $\Omega(1)$ | $\Theta(\log n)$ | $O(n)$ (degenerate) | $O(n)$ | **$0.03\text{ ms}$** (height $30$) | Degenerates to $O(n)$ on sequential keys; height unbounded. |
+| | **Red-Black Tree** | $\Omega(1)$ | $\Theta(\log n)$ | $O(\log n)$ | $O(n)$ | **$0.03\text{ ms}$** (height $16$) | Rotations strictly bound height to $\le 2\log_2(n+1)$, preventing worst-case. |
 | | **B-Tree** ($t=3$) | $\Omega(1)$ | $\Theta(\log_t n)$ | $O(\log_t n)$ | $O(n)$ | **$0.35\text{ ms}$** | $m$-way branching keeps depth shallow ($O(\log_t n)$). |
 | **Hashing** | **HashTable** (get/put) | $\Omega(1)$ | $\Theta(1)$ | $O(n)$ (all collide) | $O(M)$ | **$< 0.001\text{ ms}$** | Prime initial capacity $103$ + seed $6802$ keeps load factor $\alpha \le 0.68$. |
 | **Disjoint Sets** | **DisjointSet** (find/union) | $\Omega(1)$ | $\Theta(\alpha(V))$ | $O(\alpha(V))$ | $O(V)$ | **$< 0.001\text{ ms}$** | Path compression + union by rank achieves near-constant inverse Ackermann. |
@@ -151,7 +151,7 @@ Using our team-derived initial prime capacity $M_0 = 103$ and seed $6802$:
 #### Empirical Data Corroboration
 Under sequential input insertion ($n = 100 \dots 10,000$):
 * At $n = 15$: BST height was $14$ ($O(n)$ degeneration); Red-Black Tree height was **$4$** ($\le 2 \log_2(16) = 8$).
-* At $n = 10,000$: Standard BST search required $2.45\text{ ms}$; Red-Black Tree search took **$0.62\text{ ms}$** ($4\times$ faster, with guaranteed $O(\log n)$ height $14$).
+* At $n = 10,000$ (random key insertion): BST search required $0.03\text{ ms}$ (height $31$); Red-Black Tree search took $0.03\text{ ms}$ (height $16$). Search times are equivalent on random keys (both $O(\log n)$), but the RBT's strict height bound ($16 \le 2\log_2(10001) \approx 28$) guarantees $O(\log n)$ performance even under adversarial sequential-key orderings that would degenerate BST to $O(n)$ (height $\approx n$).
 
 ---
 

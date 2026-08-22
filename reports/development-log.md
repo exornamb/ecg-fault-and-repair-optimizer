@@ -28,7 +28,7 @@
 **Completed:**
 - Implemented all 14 data structures: `DynamicArray`, `LinkedList`, `Stack`, `Queue`, `CircularQueue`, `Deque`, `PriorityQueue`, `BST`, `RedBlackTree`, `BTree`, `HashTable`, `CustomMap`, `CustomSet`, `DisjointSet`, `Graph`.
 - Each structure has a dedicated unit test class covering normal, boundary, and invalid input cases.
-- Total tests at end of week: **59 automated tests passing**.
+- Total tests at end of week: **59 automated tests passing** (initial data-structure pass; count grew significantly in later weeks).
 
 **Challenges:**
 - Red-Black Tree rotations (LL, RR, LR, RL cases) required multiple debugging sessions — recoloring logic when the uncle is red vs black created edge cases.
@@ -64,7 +64,7 @@
 ## Week 4 — Testing, Report, Proofs & Final Submission (M6–M7)
 
 **Completed:**
-- Expanded unit tests to >70 across all data structures and algorithms.
+- Expanded unit tests to **272** across all data structures and algorithms (verified: `mvn test` → 272 tests, 0 failures).
 - Wrote 3 full proof sketches (Selection Sort loop invariant, Dijkstra induction, Greedy exchange argument).
 - Documented 2 counterexamples (Greedy Coin Change failure, Binary Search on unsorted array).
 - Wrote 5 pseudocode blocks (Priority Dispatch, Dijkstra, Kruskal, B-Tree indexing, Stack Undo Log).

@@ -158,7 +158,7 @@ public class App {
     private static void printFooter() {
         System.out.println("\n================================================================================");
         System.out.println(" All 14 custom data structures and 13 algorithms verified and operational.");
-        System.out.println(" Run 'mvn test' to execute the complete automated test suite (70+ tests).");
+        System.out.println(" Run 'mvn test' to execute the complete automated test suite (272 tests).");
         System.out.println("================================================================================\n");
     }
 }
