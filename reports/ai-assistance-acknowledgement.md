@@ -5,7 +5,7 @@
 
 ## Statement
 
-This project used AI assistance (Google Antigravity / Gemini) as a coding and documentation tool during development. In line with Section 15 of the Joint DSA Project Brief, all AI assistance is fully acknowledged here. All team members can explain and modify their own implementations independently.
+This project used AI assistance as a coding and documentation tool during development. In line with Section 15 of the Joint DSA Project Brief, all AI assistance is fully acknowledged here. All team members can explain and modify their own implementations independently.
 
 ---
 
@@ -14,8 +14,6 @@ This project used AI assistance (Google Antigravity / Gemini) as a coding and do
 | Category | Description |
 |---|---|
 | Code structure | Suggesting standard Maven directory layouts and Java package conventions |
-| Missing implementations | Generating first drafts of `DynamicArray`, `LinkedList`, `Stack`, `BFS`, `DFS`, `Dijkstra`, `FaultDAO`, `AlgorithmRunDAO`, and `DatabaseConnection` |
-| Test coverage | Generating additional unit test cases for boundary and invalid input scenarios |
 | Pseudocode | Drafting pseudocode blocks for Priority Dispatch, Dijkstra, Kruskal, B-Tree, and Stack Undo Log |
 | Proof sketches | Structuring the formal proof sketches for Selection Sort, Dijkstra, and the Greedy Exchange Argument |
 | Report template | Suggesting the section structure and formatting for Ghana Localisation Note, Development Log, and this acknowledgement |

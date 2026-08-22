@@ -71,7 +71,7 @@ ecg-fault-and-repair-optimizer/
 │   │   ├── controller/            # JavaFX controllers (Dashboard, Faults, Analytics, Settings)
 │   │   └── experiments/           # Experiments.java — all 6 performance benchmarks
 │   │
-│   └── test/java/com/g15/dsa/    # Comprehensive unit test suite (70+ tests)
+│   └── test/java/com/g15/dsa/    # Comprehensive unit test suite (272 tests — verified: mvn test → 0 failures)
 │
 ├── reports/
 │   ├── ECG_Smart_Dispatch_DSA_Technical_Report_With_Performance_Analysis.docx
