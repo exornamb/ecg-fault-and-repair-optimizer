@@ -7,7 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
-import java.util.*;
+import java.util.*; // These are not the assessed custom structures themselves, just glue code for charts and a benchmarking script
 
 /**
  * FaultDAO — Data Access Object for ECG service fault records.
