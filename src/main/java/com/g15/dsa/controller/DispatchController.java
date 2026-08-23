@@ -97,7 +97,7 @@ public class DispatchController {
             lblDistance.setText("∞");
             lblHops.setText("—");
         } else {
-            double penalizedDist = dist * TeamParameters.ROAD_PENALTY;
+            double penalizedDist = dist;
             double scoreCritical = calculateDispatchScore(dist, 5);
             double scoreHigh = calculateDispatchScore(dist, 4);
             double scoreMedium = calculateDispatchScore(dist, 3);
@@ -122,7 +122,7 @@ public class DispatchController {
             sb.append("\n\n─── All Distances from ").append(STATIONS[src]).append(" ───\n");
             for (int v = 0; v < graph.getVertexCount(); v++) {
                 double d = result.getDistanceTo(v);
-                double penD = Double.isInfinite(d) ? Double.POSITIVE_INFINITY : d * TeamParameters.ROAD_PENALTY;
+                double penD = Double.isInfinite(d) ? Double.POSITIVE_INFINITY : d;
                 sb.append(String.format("  To %-30s : %s km (Effective: %s km)%n",
                         STATIONS[v],
                         Double.isInfinite(d) ? "UNREACHABLE" : String.format("%.1f", d),
@@ -140,7 +140,7 @@ public class DispatchController {
      * Score = (Urgency * URGENCY_WEIGHT) / (Road Distance * ROAD_PENALTY)
      */
     public static double calculateDispatchScore(double roadDistance, int urgency) {
-        double effectiveDist = Math.max(0.1, roadDistance * TeamParameters.ROAD_PENALTY);
+        double effectiveDist = Math.max(0.1, roadDistance);
         return (urgency * TeamParameters.URGENCY_WEIGHT) / effectiveDist;
     }
 
@@ -148,7 +148,7 @@ public class DispatchController {
      * Calculates effective travel distance penalized by road conditions.
      */
     public static double calculatePenalizedDistance(double roadDistance) {
-        return roadDistance * TeamParameters.ROAD_PENALTY;
+        return roadDistance;
     }
 
     @FXML

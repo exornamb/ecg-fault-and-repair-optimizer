@@ -2,6 +2,7 @@ package com.g15.dsa.service;
 
 import com.g15.dsa.structures.Graph;
 import com.g15.dsa.database.DatabaseConnection;
+import com.g15.dsa.database.TeamParameters;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -112,6 +113,9 @@ public class GraphService {
 
                 double distance = rs.getDouble("km");
 
+                // PENALISE DIRT ROADS
+                double penalizedDistance = distance * TeamParameters.ROAD_PENALTY;
+
                 Integer fromVertex = locationToVertex.get(fromLocationId);
 
                 Integer toVertex = locationToVertex.get(toLocationId);
@@ -122,7 +126,7 @@ public class GraphService {
                     continue;
                 }
 
-                graph.addUndirectedEdge(fromVertex, toVertex, distance);
+                graph.addUndirectedEdge(fromVertex, toVertex, penalizedDistance);
             }
         }
     }
