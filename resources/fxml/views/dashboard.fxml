@@ -14,7 +14,7 @@
 
 <ScrollPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.g15.dsa.controller.DashboardController"
+            fx:controller="controller.DashboardController"
             stylesheets="@../../css/style.css"
             fitToWidth="true"
             hbarPolicy="NEVER"

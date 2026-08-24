@@ -67,6 +67,35 @@ public class ResourceDAO {
         return loadCrewsFromCsv(false);
     }
 
+    public List<Crew> getAllCrewDetails() {
+        List<Crew> list = new ArrayList<>();
+        String sql = """
+            SELECT crew_name, type, availability, capacity
+            FROM resources
+            ORDER BY id;
+            """;
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                list.add(new Crew(
+                        rs.getString("crew_name"),
+                        rs.getString("type"),
+                        rs.getString("availability"),
+                        rs.getInt("capacity")
+                ));
+            }
+            if (!list.isEmpty()) return list;
+        } catch (Exception ignored) {}
+
+        List<String> names = getAllCrews();
+        for (String name : names) {
+            list.add(new Crew(name, "Emergency Line Response", "AVAILABLE", 4));
+        }
+        return list;
+    }
+
+
     public String getRecommendedCrew(String category) {
         String crewType;
         switch (category) {

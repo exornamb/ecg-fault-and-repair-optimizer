@@ -6,7 +6,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.g15.dsa.controller.EditFaultController"
+      fx:controller="controller.EditFaultController"
       spacing="18"
       alignment="CENTER"
       prefWidth="420"

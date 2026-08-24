@@ -102,6 +102,11 @@ public class EditFaultController {
     // =========================
 
     @FXML
+    private void saveChanges() {
+        updateFault();
+    }
+
+    @FXML
     private void updateFault() {
         if (fault == null) {
             showWarning("Error", "No fault selected for update.");

@@ -294,6 +294,11 @@ public class SettingsController {
     // =========================
 
     @FXML
+    public void saveSettings() {
+        saveSettings(null);
+    }
+
+    @FXML
     private void saveSettings(ActionEvent event) {
 
         String systemName =
@@ -360,6 +365,11 @@ public class SettingsController {
     // =========================
     // RESET SETTINGS
     // =========================
+
+    @FXML
+    public void resetSettings() {
+        resetSettings(null);
+    }
 
     @FXML
     private void resetSettings(ActionEvent event) {

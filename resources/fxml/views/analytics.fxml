@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.AnalyticsController"
+            stylesheets="@../../css/style.css"
+            fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED">
+
+    <content>
+
+        <VBox spacing="25"
+              styleClass="dashboard-page">
+
+            <padding>
+                <Insets top="30"
+                        right="30"
+                        bottom="30"
+                        left="30"/>
+            </padding>
+
+
+            <!-- PAGE HEADER -->
+
+            <VBox spacing="5">
+
+                <Label text="Analytics"
+                       styleClass="dashboard-heading"/>
+
+                <Label text="Operational insights from reported faults and dispatch activity."
+                       styleClass="page-subtitle"/>
+
+            </VBox>
+
+
+            <!-- KPI CARDS -->
+
+            <HBox spacing="20">
+
+                <VBox styleClass="stat-card"
+                      HBox.hgrow="ALWAYS">
+
+                    <Label text="Total Faults"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="totalFaultsLabel"
+                           text="0"
+                           styleClass="card-number"/>
+
+                    <Label text="Recorded in the system"
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+
+                <VBox styleClass="stat-card"
+                      HBox.hgrow="ALWAYS">
+
+                    <Label text="High Priority"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="highPriorityLabel"
+                           text="0"
+                           styleClass="card-number"/>
+
+                    <Label text="Require urgent attention"
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+
+                <VBox styleClass="stat-card"
+                      HBox.hgrow="ALWAYS">
+
+                    <Label text="Resolved"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="resolvedFaultsLabel"
+                           text="0"
+                           styleClass="card-number"/>
+
+                    <Label text="Completed repairs"
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+
+                <VBox styleClass="stat-card"
+                      HBox.hgrow="ALWAYS">
+
+                    <Label text="Resolution Rate"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="resolutionRateLabel"
+                           text="0%"
+                           styleClass="card-number"/>
+
+                    <Label text="Faults successfully resolved"
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+            </HBox>
+
+
+            <!-- MAIN ANALYTICS -->
+
+            <HBox spacing="20">
+
+                <!-- FAULTS BY AREA -->
+
+                <VBox spacing="15"
+                      styleClass="content-card"
+                      HBox.hgrow="ALWAYS">
+
+                    <VBox spacing="3">
+
+                        <Label text="Faults by Area"
+                               styleClass="section-title"/>
+
+                        <Label text="Reported faults across service locations"
+                               styleClass="card-subtitle"/>
+
+                    </VBox>
+
+
+                    <BarChart fx:id="areaChart"
+                              animated="true"
+                              legendVisible="false"
+                              prefHeight="320">
+
+                        <xAxis>
+
+                            <CategoryAxis label="Area"/>
+
+                        </xAxis>
+
+                        <yAxis>
+
+                            <NumberAxis label="Faults"
+                                        forceZeroInRange="true"
+                                        tickUnit="1"/>
+
+                        </yAxis>
+
+                    </BarChart>
+
+                </VBox>
+
+
+                <!-- PRIORITY DISTRIBUTION -->
+
+                <VBox spacing="15"
+                      styleClass="content-card"
+                      prefWidth="380"
+                      minWidth="340">
+
+                    <VBox spacing="3">
+
+                        <Label text="Priority Distribution"
+                               styleClass="section-title"/>
+
+                        <Label text="Faults grouped by operational priority"
+                               styleClass="card-subtitle"/>
+
+                    </VBox>
+
+
+                    <PieChart fx:id="priorityChart"
+                              labelsVisible="true"
+                              legendVisible="true"
+                              prefHeight="320"/>
+
+                </VBox>
+
+            </HBox>
+
+
+            <!-- CREW WORKLOAD -->
+
+            <VBox spacing="15"
+                  styleClass="content-card">
+
+                <VBox spacing="3">
+
+                    <Label text="Crew Workload"
+                           styleClass="section-title"/>
+
+                    <Label text="Current workload and availability of response crews"
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+                <TableView fx:id="workloadTable"
+                           prefHeight="300">
+
+                    <columns>
+
+                        <TableColumn fx:id="crewNameColumn"
+                                     text="Crew"/>
+
+                        <TableColumn fx:id="assignedFaultsColumn"
+                                     text="Assigned Faults"/>
+
+                        <TableColumn fx:id="availabilityColumn"
+                                     text="Availability"/>
+
+                        <TableColumn fx:id="capacityColumn"
+                                     text="Capacity"/>
+
+                    </columns>
+
+                </TableView>
+
+            </VBox>
+
+            <!-- ========================= -->
+            <!-- DSA PERFORMANCE -->
+            <!-- ========================= -->
+
+            <VBox spacing="15"
+                  styleClass="content-card">
+
+                <VBox spacing="3">
+
+                    <Label text="DSA Performance"
+                           styleClass="section-title"/>
+
+                    <Label text="Empirical runtime and memory usage of implemented algorithms"
+                           styleClass="card-subtitle"/>
+
+                </VBox>
+
+
+                <HBox spacing="20">
+
+                    <!-- RUNTIME -->
+
+                    <VBox spacing="10"
+                          HBox.hgrow="ALWAYS">
+
+                        <Label text="Runtime Performance"
+                               styleClass="card-title"/>
+
+                        <LineChart fx:id="runtimeChart"
+                                   animated="true"
+                                   createSymbols="true"
+                                   legendVisible="true"
+                                   prefHeight="350">
+
+                            <xAxis>
+
+                                <CategoryAxis label="Input Size"/>
+
+                            </xAxis>
+
+                            <yAxis>
+
+                                <NumberAxis label="Runtime (ms)"
+                                            forceZeroInRange="true"/>
+
+                            </yAxis>
+
+                        </LineChart>
+
+                    </VBox>
+
+
+                    <!-- MEMORY -->
+
+                    <VBox spacing="10"
+                          HBox.hgrow="ALWAYS">
+
+                        <Label text="Memory Usage"
+                               styleClass="card-title"/>
+
+                        <LineChart fx:id="memoryChart"
+                                   animated="true"
+                                   createSymbols="true"
+                                   legendVisible="true"
+                                   prefHeight="350">
+
+                            <xAxis>
+
+                                <CategoryAxis label="Input Size"/>
+
+                            </xAxis>
+
+                            <yAxis>
+
+                                <NumberAxis label="Memory (KB)"
+                                            forceZeroInRange="true"/>
+
+                            </yAxis>
+
+                        </LineChart>
+
+                    </VBox>
+
+                </HBox>
+
+            </VBox>
+
+        </VBox>
+
+    </content>
+
+</ScrollPane>

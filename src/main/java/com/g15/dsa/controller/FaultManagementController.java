@@ -71,6 +71,9 @@ public class FaultManagementController {
     @FXML
     private Label totalFaultsCountLabel;
 
+    @FXML
+    private Label faultCountLabel;
+
     private FilteredList<Fault> filteredFaults;
 
     // =========================
@@ -190,11 +193,29 @@ public class FaultManagementController {
         if (totalFaultsCountLabel != null && filteredFaults != null) {
             totalFaultsCountLabel.setText("Total Records: " + filteredFaults.size());
         }
+        if (faultCountLabel != null && filteredFaults != null) {
+            faultCountLabel.setText(filteredFaults.size() + " faults");
+        }
     }
 
     // =========================
     // CRUD ACTIONS
     // =========================
+
+    @FXML
+    public void addFault() {
+        openAddFaultModal();
+    }
+
+    @FXML
+    public void editFault() {
+        openEditFaultModal();
+    }
+
+    @FXML
+    public void deleteFault() {
+        handleDeleteFault();
+    }
 
     @FXML
     public void openAddFaultModal() {

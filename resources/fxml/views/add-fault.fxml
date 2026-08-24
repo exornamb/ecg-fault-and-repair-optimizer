@@ -6,7 +6,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.g15.dsa.controller.AddFaultController"
+      fx:controller="controller.AddFaultController"
       spacing="15"
       alignment="CENTER"
       prefWidth="420"
@@ -27,36 +27,31 @@
 
     <ComboBox
             fx:id="locationBox"
-            promptText="Select Location"
-            prefWidth="280"/>
+            promptText="Select Location"/>
 
     <!-- Fault Category -->
 
     <ComboBox
             fx:id="categoryBox"
-            promptText="Select Fault Category"
-            prefWidth="280"/>
+            promptText="Select Fault Category"/>
 
     <!-- Urgency -->
 
     <ComboBox
             fx:id="urgencyBox"
-            promptText="Select Priority"
-            prefWidth="280"/>
+            promptText="Select Priority"/>
 
     <!-- Crew -->
 
     <ComboBox
             fx:id="crewBox"
-            promptText="Assign Crew"
-            prefWidth="280"/>
+            promptText="Assign Crew"/>
 
     <!-- Status -->
 
     <ComboBox
             fx:id="statusBox"
-            promptText="Select Status"
-            prefWidth="280"/>
+            promptText="Select Status"/>
 
     <HBox
             spacing="15"
@@ -64,13 +59,11 @@
 
         <Button
                 text="Save"
-                onAction="#saveFault"
-                prefWidth="100"/>
+                onAction="#saveFault"/>
 
         <Button
                 text="Cancel"
-                onAction="#closeWindow"
-                prefWidth="100"/>
+                onAction="#closeWindow"/>
 
     </HBox>
 

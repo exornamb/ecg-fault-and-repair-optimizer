@@ -6,7 +6,7 @@
 
 <ScrollPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.g15.dsa.controller.DispatchController"
+            fx:controller="controller.DispatchController"
             stylesheets="@../../css/style.css"
             fitToWidth="true"
             hbarPolicy="NEVER"
@@ -236,10 +236,9 @@
                            text="-"/>
 
                 </VBox>
-
                 <!-- =========================
-                     CREW RECOMMENDATION
-                     ========================= -->
+     CREW RECOMMENDATION
+     ========================= -->
 
                 <VBox spacing="10"
                       styleClass="recommendation-card">

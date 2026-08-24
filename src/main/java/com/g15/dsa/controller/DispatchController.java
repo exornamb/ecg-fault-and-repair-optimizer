@@ -1,138 +1,169 @@
 package com.g15.dsa.controller;
 
-import com.g15.dsa.algorithms.graph.Dijkstra;
+import com.g15.dsa.dao.FaultDAO;
+import com.g15.dsa.dao.ResourceDAO;
 import com.g15.dsa.database.TeamParameters;
-import com.g15.dsa.structures.Graph;
+import com.g15.dsa.model.Fault;
+import com.g15.dsa.service.FaultService;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.util.List;
-
-/**
- * Dispatch & Routing Controller.
- * Provides a live Dijkstra demo over the Accra/Legon ECG substation network
- * with index-derived urgency weighting and road condition penalties.
- */
 public class DispatchController {
 
-    // ── Substation node names ────────────────────────────────────────────────
-    private static final String[] STATIONS = {
-            "0: Achimota Substation",
-            "1: Legon Campus (UG)",
-            "2: East Legon Feeder",
-            "3: Airport Hills Relay",
-            "4: Cantonments Hub"
-    };
+    // ── Summary KPI labels ───────────────────────────────────────────────────
+    @FXML private Label pendingCountLabel;
+    @FXML private Label assignedCountLabel;
+    @FXML private Label availableCrewCountLabel;
+    @FXML private Label queueCountLabel;
 
-    @FXML private ComboBox<String> cbSource;
-    @FXML private ComboBox<String> cbTarget;
-    @FXML private TextArea routeOutput;
-    @FXML private Label lblVertices;
-    @FXML private Label lblEdges;
-    @FXML private Label lblDistance;
-    @FXML private Label lblHops;
+    // ── Dispatch Queue Table ─────────────────────────────────────────────────
+    @FXML private TableView<Fault> faultTable;
+    @FXML private TableColumn<Fault, String> faultIdColumn;
+    @FXML private TableColumn<Fault, String> areaColumn;
+    @FXML private TableColumn<Fault, String> priorityColumn;
+    @FXML private TableColumn<Fault, String> crewColumn;
+    @FXML private TableColumn<Fault, String> statusColumn;
 
-    /** Weighted directed graph of the Accra/Legon grid. */
-    private Graph graph;
+    // ── Crew Assignment Panel ────────────────────────────────────────────────
+    @FXML private Label selectedFaultLabel;
+    @FXML private Label selectedAreaLabel;
+    @FXML private Label selectedPriorityLabel;
+    @FXML private Label recommendedCrewLabel;
+    @FXML private Label recommendationReasonLabel;
+    @FXML private ComboBox<String> crewBox;
+    @FXML private Button assignCrewButton;
+
+    private final ResourceDAO resourceDAO = new ResourceDAO();
+    private final FaultDAO faultDAO = new FaultDAO();
 
     @FXML
     public void initialize() {
-        cbSource.setItems(FXCollections.observableArrayList(STATIONS));
-        cbTarget.setItems(FXCollections.observableArrayList(STATIONS));
-        cbSource.getSelectionModel().select(0);
-        cbTarget.getSelectionModel().select(1);
+        setupTableColumns();
+        loadQueueData();
+        loadCrews();
+        setupSelectionListener();
+        updateKpis();
+    }
 
-        buildGraph();
-        lblVertices.setText(String.valueOf(graph.getVertexCount()));
+    private void setupTableColumns() {
+        if (faultIdColumn != null) faultIdColumn.setCellValueFactory(new PropertyValueFactory<>("faultId"));
+        if (areaColumn != null) areaColumn.setCellValueFactory(new PropertyValueFactory<>("area"));
+        if (priorityColumn != null) priorityColumn.setCellValueFactory(new PropertyValueFactory<>("priorityText"));
+        if (crewColumn != null) crewColumn.setCellValueFactory(new PropertyValueFactory<>("crew"));
+        if (statusColumn != null) statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+    }
 
-        int edgeCount = 0;
-        for (int v = 0; v < graph.getVertexCount(); v++) edgeCount += graph.getNeighbors(v).size();
-        lblEdges.setText(String.valueOf(edgeCount));
+    private void loadQueueData() {
+        if (faultTable != null) {
+            ObservableList<Fault> queue = FXCollections.observableArrayList();
+            for (Fault f : FaultService.getFaults()) {
+                if (!"RESOLVED".equalsIgnoreCase(f.getStatus())) {
+                    queue.add(f);
+                }
+            }
+            faultTable.setItems(queue);
+            if (queueCountLabel != null) queueCountLabel.setText(queue.size() + " faults");
+        }
+    }
 
-        routeOutput.setText(
-                "Accra/Legon ECG Substation Network loaded.\n\n" +
-                "5 Substations | 8 Directed Edges\n\n" +
-                "Team Index Parameters Active:\n" +
-                "• Urgency Weight (w_u) : " + TeamParameters.URGENCY_WEIGHT + "\n" +
-                "• Road Penalty Factor  : " + TeamParameters.ROAD_PENALTY + "\n" +
-                "• Hash Capacity (Prime): " + TeamParameters.HASH_CAPACITY + "\n" +
-                "• Hash Seed Constant   : " + TeamParameters.HASH_SEED + "\n\n" +
-                "Select source and destination nodes, then click 'Find Shortest Route' to run\n" +
-                "Dijkstra's algorithm and calculate route priority scores in real time.\n\n" +
-                "Time Complexity: O((V + E) log V)"
-        );
+    private void loadCrews() {
+        if (crewBox != null) {
+            crewBox.setItems(FXCollections.observableArrayList(resourceDAO.getAllCrews()));
+        }
+    }
+
+    private void setupSelectionListener() {
+        if (faultTable != null) {
+            faultTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, selected) -> {
+                if (selected != null) {
+                    if (selectedFaultLabel != null) selectedFaultLabel.setText(selected.getFaultId());
+                    if (selectedAreaLabel != null) selectedAreaLabel.setText(selected.getArea());
+                    if (selectedPriorityLabel != null) selectedPriorityLabel.setText(selected.getPriorityText());
+
+                    String category = selected.getCategory() != null ? selected.getCategory() : "General";
+                    String recommended = resourceDAO.getRecommendedCrew(category);
+                    String reason = resourceDAO.getRecommendationReason(category);
+
+                    if (recommendedCrewLabel != null) recommendedCrewLabel.setText(recommended);
+                    if (recommendationReasonLabel != null) recommendationReasonLabel.setText(reason);
+                    if (crewBox != null) crewBox.setValue(recommended);
+                } else {
+                    clearSelection();
+                }
+            });
+        }
+    }
+
+    private void clearSelection() {
+        if (selectedFaultLabel != null) selectedFaultLabel.setText("No fault selected");
+        if (selectedAreaLabel != null) selectedAreaLabel.setText("-");
+        if (selectedPriorityLabel != null) selectedPriorityLabel.setText("-");
+        if (recommendedCrewLabel != null) recommendedCrewLabel.setText("No recommendation");
+        if (recommendationReasonLabel != null) recommendationReasonLabel.setText("Select a fault to receive a crew recommendation.");
+        if (crewBox != null) crewBox.setValue(null);
+    }
+
+    private void updateKpis() {
+        int pending = 0;
+        int assigned = 0;
+
+        for (Fault f : FaultService.getFaults()) {
+            if ("OPEN".equalsIgnoreCase(f.getStatus()) || "PENDING".equalsIgnoreCase(f.getStatus())) {
+                pending++;
+            } else if ("ASSIGNED".equalsIgnoreCase(f.getStatus()) || (f.getCrew() != null && !f.getCrew().isEmpty() && !"Unassigned".equalsIgnoreCase(f.getCrew()) && !"RESOLVED".equalsIgnoreCase(f.getStatus()))) {
+                assigned++;
+            }
+        }
+
+        if (pendingCountLabel != null) pendingCountLabel.setText(String.valueOf(pending));
+        if (assignedCountLabel != null) assignedCountLabel.setText(String.valueOf(assigned));
+        if (availableCrewCountLabel != null) availableCrewCountLabel.setText(String.valueOf(resourceDAO.getAvailableCrewCount()));
     }
 
     @FXML
-    public void onRoute() {
-        int src = cbSource.getSelectionModel().getSelectedIndex();
-        int tgt = cbTarget.getSelectionModel().getSelectedIndex();
-
-        if (src < 0 || tgt < 0) {
-            routeOutput.setText("Please select both source and destination substations.");
+    public void assignCrew() {
+        Fault selected = (faultTable != null) ? faultTable.getSelectionModel().getSelectedItem() : null;
+        if (selected == null) {
+            showAlert("No Selection", "Please select a fault from the dispatch queue.");
             return;
         }
 
-        if (src == tgt) {
-            routeOutput.setText("Source and destination are the same node.");
-            lblDistance.setText("0.0 km");
-            lblHops.setText("0");
+        String crew = (crewBox != null) ? crewBox.getValue() : null;
+        if (crew == null || crew.trim().isEmpty()) {
+            showAlert("No Crew Selected", "Please select a response crew to assign.");
             return;
         }
 
-        Dijkstra.Result result = Dijkstra.shortestPaths(graph, src);
-        double dist = result.getDistanceTo(tgt);
-        List<Integer> path = result.getPathTo(tgt);
+        selected.setCrew(crew);
+        selected.setStatus("ASSIGNED");
+        faultDAO.updateFault(selected);
+        resourceDAO.setCrewBusy(crew);
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("─── Dijkstra Shortest Path & Route Scoring ───\n\n");
-        sb.append("Source      : ").append(STATIONS[src]).append("\n");
-        sb.append("Destination : ").append(STATIONS[tgt]).append("\n\n");
+        FaultService.refresh();
+        loadQueueData();
+        updateKpis();
 
-        if (!result.hasPathTo(tgt) || path.isEmpty()) {
-            sb.append("⚠ No path exists between the selected substations.");
-            lblDistance.setText("∞");
-            lblHops.setText("—");
-        } else {
-            double penalizedDist = calculatePenalizedDistance(dist);
-            double scoreCritical = calculateDispatchScore(dist, 5);
-            double scoreHigh = calculateDispatchScore(dist, 4);
-            double scoreMedium = calculateDispatchScore(dist, 3);
+        Alert success = new Alert(Alert.AlertType.INFORMATION);
+        success.setTitle("Dispatch Confirmed");
+        success.setHeaderText("Crew Dispatched Successfully");
+        success.setContentText(crew + " has been assigned to " + selected.getFaultId() + " (" + selected.getArea() + ").");
+        success.showAndWait();
+    }
 
-            sb.append(String.format("Physical Distance    : %.1f km%n", dist));
-            sb.append(String.format("Road Penalty Factor  : %.1fx (Michelle's Index Parameter)%n", TeamParameters.ROAD_PENALTY));
-            sb.append(String.format("Effective Road Cost  : %.2f km (Distance × %.1f)%n", penalizedDist, TeamParameters.ROAD_PENALTY));
-            sb.append("Hops                 : ").append(path.size() - 1).append("\n\n");
-
-            sb.append("─── Dispatch Priority Scores (Urgency Weight = ").append(TeamParameters.URGENCY_WEIGHT).append(") ───\n");
-            sb.append(String.format("  • Critical Outage (Urgency 5) Dispatch Score : %.2f%n", scoreCritical));
-            sb.append(String.format("  • High Outage     (Urgency 4) Dispatch Score : %.2f%n", scoreHigh));
-            sb.append(String.format("  • Medium Outage   (Urgency 3) Dispatch Score : %.2f%n%n", scoreMedium));
-
-            sb.append("Optimal Route:\n");
-            for (int i = 0; i < path.size(); i++) {
-                int node = path.get(i);
-                sb.append("  ").append(i == 0 ? "🟢 " : i == path.size() - 1 ? "🔴 " : "⚪ ");
-                sb.append(STATIONS[node]);
-                if (i < path.size() - 1) sb.append(" →\n");
-            }
-            sb.append("\n\n─── All Distances from ").append(STATIONS[src]).append(" ───\n");
-            for (int v = 0; v < graph.getVertexCount(); v++) {
-                double d = result.getDistanceTo(v);
-                double penD = Double.isInfinite(d) ? Double.POSITIVE_INFINITY : calculatePenalizedDistance(d);
-                sb.append(String.format("  To %-30s : %s km (Effective: %s km)%n",
-                        STATIONS[v],
-                        Double.isInfinite(d) ? "UNREACHABLE" : String.format("%.1f", d),
-                        Double.isInfinite(penD) ? "UNREACHABLE" : String.format("%.2f", penD)));
-            }
-            lblDistance.setText(String.format("%.1f km", dist));
-            lblHops.setText(String.valueOf(path.size() - 1));
-        }
-
-        routeOutput.setText(sb.toString());
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     /**
@@ -149,42 +180,5 @@ public class DispatchController {
      */
     public static double calculatePenalizedDistance(double roadDistance) {
         return roadDistance * TeamParameters.ROAD_PENALTY;
-    }
-
-    @FXML
-    public void onReset() {
-        cbSource.getSelectionModel().select(0);
-        cbTarget.getSelectionModel().select(1);
-        lblDistance.setText("—");
-        lblHops.setText("—");
-        initialize();
-    }
-
-    private void buildGraph() {
-        graph = new Graph(5);
-        // Achimota → Legon (3.2 km)
-        graph.addEdge(0, 1, 3.2);
-        graph.addEdge(1, 0, 3.2);
-        // Achimota → East Legon (5.7 km)
-        graph.addEdge(0, 2, 5.7);
-        graph.addEdge(2, 0, 5.7);
-        // Legon → East Legon (2.1 km)
-        graph.addEdge(1, 2, 2.1);
-        graph.addEdge(2, 1, 2.1);
-        // East Legon → Airport Hills (3.4 km)
-        graph.addEdge(2, 3, 3.4);
-        graph.addEdge(3, 2, 3.4);
-        // Airport Hills → Cantonments (4.1 km)
-        graph.addEdge(3, 4, 4.1);
-        graph.addEdge(4, 3, 4.1);
-        // Legon → Cantonments (6.8 km)
-        graph.addEdge(1, 4, 6.8);
-        graph.addEdge(4, 1, 6.8);
-        // Achimota → Airport Hills (7.5 km)
-        graph.addEdge(0, 3, 7.5);
-        graph.addEdge(3, 0, 7.5);
-        // Cantonments → Achimota (8.0 km)
-        graph.addEdge(4, 0, 8.0);
-        graph.addEdge(0, 4, 8.0);
     }
 }
