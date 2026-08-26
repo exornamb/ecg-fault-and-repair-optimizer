@@ -49,6 +49,8 @@ public class Crew {
 
     public int getActiveJobs() { return activeJobs; }
     public void setActiveJobs(int activeJobs) { this.activeJobs = activeJobs; }
+    public int getAssignedFaults() { return activeJobs; }
+    public void setAssignedFaults(int faults) { this.activeJobs = faults; }
 
     public boolean isAvailable() {
         return "Available".equalsIgnoreCase(availability) && activeJobs < capacity;

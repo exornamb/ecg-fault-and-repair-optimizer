@@ -1,84 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.g15.dsa.controller.MainLayoutController"
-            stylesheets="@../css/style.css"
-            prefHeight="800.0" prefWidth="1280.0"
-            styleClass="app-root">
+            stylesheets="@../css/style.css">
 
-    <!-- TOP APP BAR -->
-    <top>
-        <HBox alignment="CENTER_LEFT" spacing="15" styleClass="top-bar">
-            <padding>
-                <Insets top="12" right="24" bottom="12" left="24"/>
-            </padding>
-            <VBox spacing="2">
-                <Label text="ECG DUMSOR RESPONSE OPTIMIZER" styleClass="app-title"/>
-                <Label text="Group 15: Codebility v2.0 | DCIT 204 &amp; 308 Practical Suite" styleClass="app-subtitle"/>
-            </VBox>
-            <Region HBox.hgrow="ALWAYS"/>
-            <HBox alignment="CENTER" spacing="10" styleClass="status-pill">
-                <Label text="⚡" style="-fx-font-size: 14px;"/>
-                <Label text="Accra / Legon Grid: ONLINE" styleClass="status-pill-text"/>
-            </HBox>
-        </HBox>
-    </top>
+    <!-- ===========================
+         SIDEBAR
+         =========================== -->
 
-    <!-- SIDEBAR NAVIGATION -->
     <left>
-        <VBox spacing="8" styleClass="sidebar">
+
+        <VBox prefWidth="260"
+              spacing="18"
+              styleClass="sidebar">
+
             <padding>
-                <Insets top="20" right="14" bottom="20" left="14"/>
+                <Insets top="28" right="18" bottom="28" left="18"/>
             </padding>
 
-            <Label text="NAVIGATION" styleClass="nav-section-header"/>
+            <!-- LOGO -->
 
-            <Button fx:id="btnDashboard" text="📊  Dashboard" onAction="#showDashboard" styleClass="nav-button" maxWidth="Infinity"/>
-            <Button fx:id="btnFaultManagement" text="🛠  Fault Management" onAction="#showFaultManagement" styleClass="nav-button" maxWidth="Infinity"/>
-            <Button fx:id="btnDispatch" text="🚚  Dispatch &amp; Routing" onAction="#showDispatch" styleClass="nav-button" maxWidth="Infinity"/>
+            <VBox spacing="3">
 
-            <Separator styleClass="sidebar-separator">
-                <VBox.margin>
-                    <Insets top="10" bottom="10"/>
-                </VBox.margin>
-            </Separator>
+                <Label text="⚡ ECG"
+                       styleClass="sidebar-title"/>
 
-            <Label text="EXAMINATION SUITE" styleClass="nav-section-header"/>
-<!--            <Button fx:id="btnDefense" text="🎓  Oral Defense Showcase" onAction="#showDefense" styleClass="nav-button" maxWidth="Infinity"/>-->
-            <Button fx:id="btnSettings" text="⚙  Team Parameters" onAction="#showSettings" styleClass="nav-button" maxWidth="Infinity"/>
+                <Label text="Smart Dispatch"
+                       styleClass="sidebar-subtitle"/>
 
-            <Region VBox.vgrow="ALWAYS"/>
-
-            <!-- FOOTER INFO IN SIDEBAR -->
-            <VBox spacing="4" styleClass="sidebar-footer-card">
-                <padding>
-                    <Insets top="12" right="12" bottom="12" left="12"/>
-                </padding>
-                <Label text="Group 15 Index" styleClass="sidebar-footer-title"/>
-                <Label text="Student Ref: 22396802" styleClass="sidebar-footer-desc"/>
-                <Label text="Hash Cap: 103 (Prime)" styleClass="sidebar-footer-desc"/>
             </VBox>
+
+            <Separator opacity="0.15"/>
+
+            <!-- MENU -->
+
+            <Button fx:id="dashboardButton"
+                    text="🏠 Dashboard"
+                    styleClass="menu-button"
+                    onAction="#openDashboard"/>
+
+            <Button fx:id="faultButton"
+                    text="⚡ Fault Management"
+                    styleClass="menu-button"
+                    onAction="#openFaultManagement"/>
+
+            <Button fx:id="dispatchButton"
+                    text="🚚 Dispatch Center"
+                    styleClass="menu-button"
+                    onAction="#openDispatch"/>
+
+            <Button fx:id="analyticsButton"
+                    text="📊 Analytics"
+                    styleClass="menu-button"
+                    onAction="#openAnalytics"/>
+
+            <Button fx:id="databaseButton"
+                    text="🗄 Database"
+                    styleClass="menu-button"
+                    onAction="#openDatabase"/>
+
+            <Button fx:id="settingsButton"
+                    text="⚙ Settings"
+                    styleClass="menu-button"
+                    onAction="#openSettings"/>
+
+            <Pane VBox.vgrow="ALWAYS"/>
+
+            <Separator opacity="0.15"/>
+
+            <Button text="🚪 Logout"
+                    maxWidth="Infinity"
+                    styleClass="logout-button"
+                    onAction="#logout"/>
+
         </VBox>
+
     </left>
 
-    <!-- MAIN CONTENT VIEW -->
+    <!-- ===========================
+         MAIN CONTENT
+         =========================== -->
+
     <center>
-        <StackPane fx:id="contentArea" styleClass="content-area">
-            <padding>
-                <Insets top="20" right="24" bottom="20" left="24"/>
-            </padding>
-        </StackPane>
+
+        <VBox spacing="18"
+              style="-fx-background-color:#EEF3F8;">
+
+            <!-- TOP BAR -->
+
+            <HBox alignment="CENTER_LEFT"
+                  spacing="20"
+                  styleClass="top-bar">
+
+                <padding>
+                    <Insets top="18"
+                            right="30"
+                            bottom="18"
+                            left="30"/>
+                </padding>
+
+                <Label text="ECG Smart Dispatch"
+                       styleClass="page-title"/>
+
+                <Pane HBox.hgrow="ALWAYS"/>
+
+                <Label text="Administrator"
+                       style="-fx-font-size:15px;
+                              -fx-font-weight:bold;
+                              -fx-text-fill:#64748B;"/>
+
+            </HBox>
+
+            <!-- CONTENT -->
+
+            <StackPane fx:id="contentPane"
+                       VBox.vgrow="ALWAYS"
+                       style="-fx-padding:22;
+                              -fx-background-color:transparent;"/>
+
+        </VBox>
+
     </center>
 
 </BorderPane>

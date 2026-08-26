@@ -11,11 +11,15 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main-layout.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
             Parent root = loader.load();
 
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+
+            try {
+                primaryStage.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/images/ecg-logo.jpg")));
+            } catch (Exception ignored) {}
 
             // Size the window to 85% of the screen instead of a fixed 1280x800,
             // so it looks right on both small laptops and large monitors.

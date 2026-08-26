@@ -1,6 +1,5 @@
 package com.g15.dsa.controller;
 
-import com.g15.dsa.dao.FaultDAO;
 import com.g15.dsa.dao.LocationDAO;
 import com.g15.dsa.dao.ResourceDAO;
 import com.g15.dsa.model.Fault;
@@ -108,7 +107,6 @@ public class AddFaultController {
             return;
         }
 
-        FaultDAO dao = new FaultDAO();
         int urgency = convertUrgency(urgencyBox.getValue());
 
         if (editingFault == null) {
@@ -121,17 +119,17 @@ public class AddFaultController {
                     crewBox.getValue(),
                     statusBox.getValue()
             );
-            dao.insertFault(newFault);
+            // Route through FaultService so DB, CSV, and in-memory list all stay in sync
+            FaultService.addFault(newFault);
         } else {
             editingFault.setArea(locationBox.getValue());
             editingFault.setCategory(categoryBox.getValue());
             editingFault.setUrgency(urgency);
             editingFault.setCrew(crewBox.getValue());
             editingFault.setStatus(statusBox.getValue());
-            dao.updateFault(editingFault);
+            // Route through FaultService so DB, CSV, and in-memory list all stay in sync
+            FaultService.updateFault(editingFault);
         }
-
-        FaultService.refresh();
 
         if (controller != null) {
             controller.refreshTable();

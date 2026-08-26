@@ -49,18 +49,20 @@ CREATE TABLE roads (
 -- Jobs to be queued, prioritised, searched and sorted
 -- =========================================================
 CREATE TABLE service_requests (
-    request_id               VARCHAR(10) PRIMARY KEY,   -- e.g. Q001
-    source_location_id       VARCHAR(10) NOT NULL REFERENCES locations(location_id),
-    destination_location_id  VARCHAR(10) NOT NULL REFERENCES locations(location_id),
-    category                 VARCHAR(50) NOT NULL,      -- e.g. Medical, Document
+    id                       SERIAL,                    -- auto-increment surrogate key
+    request_id               VARCHAR(20) PRIMARY KEY,   -- e.g. FLT-1234 or Q001
+    fault_id                 VARCHAR(20),               -- alias / display ID (same as request_id)
+    source_location_id       VARCHAR(10) REFERENCES locations(location_id),
+    destination_location_id  VARCHAR(10) REFERENCES locations(location_id),
+    area                     VARCHAR(150),              -- human-readable location / area name
+    category                 VARCHAR(50) NOT NULL,      -- e.g. Transformer Failure, Cable Burst
     urgency                  INTEGER     NOT NULL CHECK (urgency BETWEEN 1 AND 5),
-    time_submitted           TIMESTAMP   NOT NULL,
-    deadline                 TIMESTAMP   NOT NULL,
-    status                   VARCHAR(20) NOT NULL DEFAULT 'NEW',
+    time_submitted           TIMESTAMP   NOT NULL DEFAULT NOW(),
+    deadline                 TIMESTAMP,
+    crew                     VARCHAR(100) DEFAULT 'Unassigned',  -- assigned repair crew
+    status                   VARCHAR(20) NOT NULL DEFAULT 'OPEN',
     CONSTRAINT chk_service_requests_status
-        CHECK (status IN ('NEW', 'ASSIGNED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED')),
-    CONSTRAINT chk_service_requests_deadline
-        CHECK (deadline >= time_submitted)
+        CHECK (status IN ('NEW', 'OPEN', 'ASSIGNED', 'IN_PROGRESS', 'COMPLETED', 'RESOLVED', 'CANCELLED'))
 );
 
 -- =========================================================
