@@ -43,54 +43,35 @@ public class ResourceDAO {
 
     public List<String> getAllCrews() {
         List<String> crews = new ArrayList<>();
-        String sql = """
-            SELECT crew_name
-            FROM resources
-            ORDER BY crew_name;
-            """;
+        crews.add("Crew Alpha (Legon Substation)");
+        crews.add("Crew Bravo (East Legon Hub)");
+        crews.add("Crew Charlie (Madina Feeder)");
+        crews.add("Crew Delta (Achimota Grid)");
+        crews.add("Crew Echo (Adenta Line)");
 
-        try (
-                Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                ResultSet rs = stmt.executeQuery()
-        ) {
-            while (rs.next()) {
-                crews.add(rs.getString("crew_name"));
+        List<String> csvCrews = loadCrewsFromCsv(false);
+        for (String c : csvCrews) {
+            if (!crews.contains(c)) {
+                crews.add(c);
             }
-            if (!crews.isEmpty()) {
-                return crews;
-            }
-        } catch (Exception e) {
-            // Fallback to CSV
         }
-
-        return loadCrewsFromCsv(false);
+        return crews;
     }
 
     public List<Crew> getAllCrewDetails() {
         List<Crew> list = new ArrayList<>();
-        String sql = """
-            SELECT crew_name, type, availability, capacity
-            FROM resources
-            ORDER BY id;
-            """;
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                list.add(new Crew(
-                        rs.getString("crew_name"),
-                        rs.getString("type"),
-                        rs.getString("availability"),
-                        rs.getInt("capacity")
-                ));
-            }
-            if (!list.isEmpty()) return list;
-        } catch (Exception ignored) {}
+        list.add(new Crew("C001", "Crew Alpha (Legon Substation)", "Emergency Line Response", "AVAILABLE", 4, "Legon"));
+        list.add(new Crew("C002", "Crew Bravo (East Legon Hub)", "Transformer crew", "AVAILABLE", 4, "East Legon"));
+        list.add(new Crew("C003", "Crew Charlie (Madina Feeder)", "Cable truck", "AVAILABLE", 3, "Madina"));
+        list.add(new Crew("C004", "Crew Delta (Achimota Grid)", "Cable truck", "AVAILABLE", 5, "Achimota"));
+        list.add(new Crew("C005", "Crew Echo (Adenta Line)", "Meter team", "AVAILABLE", 3, "Adenta"));
 
-        List<String> names = getAllCrews();
-        for (String name : names) {
-            list.add(new Crew(name, "Emergency Line Response", "AVAILABLE", 4));
+        List<Crew> fromCsv = loadCrewObjectsFromCsv();
+        for (Crew c : fromCsv) {
+            boolean exists = list.stream().anyMatch(existing -> existing.getName().equalsIgnoreCase(c.getName()));
+            if (!exists) {
+                list.add(c);
+            }
         }
         return list;
     }
@@ -243,10 +224,14 @@ public class ResourceDAO {
                     if (header) { header = false; continue; }
                     String[] cols = line.split(",", -1);
                     if (cols.length >= 4) {
-                        String name = cols[1].trim();
-                        String avail = cols[3].trim();
+                        String name = cols.length >= 6 && !cols[5].trim().isEmpty()
+                                ? cols[5].trim()
+                                : cols[1].trim() + " #" + cols[0].trim();
+                        String avail = cols.length >= 5 ? cols[4].trim() : "AVAILABLE";
                         if (!onlyAvailable || avail.equalsIgnoreCase("AVAILABLE")) {
-                            crews.add(name);
+                            if (!crews.contains(name)) {
+                                crews.add(name);
+                            }
                         }
                     }
                 }
@@ -264,5 +249,32 @@ public class ResourceDAO {
             crews.add("Crew Echo (Adenta Line)");
         }
         return crews;
+    }
+
+    private List<Crew> loadCrewObjectsFromCsv() {
+        List<Crew> list = new ArrayList<>();
+        String[] csvPaths = {"data/resources.csv", "resources.csv"};
+        for (String path : csvPaths) {
+            try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+                String line;
+                boolean header = true;
+                while ((line = br.readLine()) != null) {
+                    if (header) { header = false; continue; }
+                    String[] cols = line.split(",", -1);
+                    if (cols.length >= 4) {
+                        String id = cols[0].trim();
+                        String type = cols[1].trim();
+                        String baseLoc = cols[2].trim();
+                        int cap = 4;
+                        try { cap = Integer.parseInt(cols[3].trim()); } catch (NumberFormatException ignored) {}
+                        String avail = cols.length >= 5 ? cols[4].trim() : "AVAILABLE";
+                        String name = cols.length >= 6 && !cols[5].trim().isEmpty() ? cols[5].trim() : type + " #" + id;
+                        list.add(new Crew(id, name, type, avail, cap, baseLoc));
+                    }
+                }
+                if (!list.isEmpty()) return list;
+            } catch (IOException ignored) {}
+        }
+        return list;
     }
 }

@@ -1,6 +1,5 @@
 package com.g15.dsa.controller;
 
-import com.g15.dsa.dao.FaultDAO;
 import com.g15.dsa.dao.ResourceDAO;
 import com.g15.dsa.database.TeamParameters;
 import com.g15.dsa.model.Fault;
@@ -42,7 +41,6 @@ public class DispatchController {
     @FXML private Button assignCrewButton;
 
     private final ResourceDAO resourceDAO = new ResourceDAO();
-    private final FaultDAO faultDAO = new FaultDAO();
 
     @FXML
     public void initialize() {
@@ -51,6 +49,12 @@ public class DispatchController {
         loadCrews();
         setupSelectionListener();
         updateKpis();
+
+        // Listen for live changes across all views
+        FaultService.getFaults().addListener((javafx.collections.ListChangeListener<Fault>) c -> {
+            loadQueueData();
+            updateKpis();
+        });
     }
 
     private void setupTableColumns() {
@@ -65,7 +69,10 @@ public class DispatchController {
         if (faultTable != null) {
             ObservableList<Fault> queue = FXCollections.observableArrayList();
             for (Fault f : FaultService.getFaults()) {
-                if (!"RESOLVED".equalsIgnoreCase(f.getStatus())) {
+                boolean isAssigned = "ASSIGNED".equalsIgnoreCase(f.getStatus())
+                        || (f.getCrew() != null && !f.getCrew().trim().isEmpty() && !"Unassigned".equalsIgnoreCase(f.getCrew().trim()));
+                boolean isResolved = "RESOLVED".equalsIgnoreCase(f.getStatus()) || "COMPLETED".equalsIgnoreCase(f.getStatus());
+                if (!isAssigned && !isResolved) {
                     queue.add(f);
                 }
             }
@@ -144,7 +151,8 @@ public class DispatchController {
 
         selected.setCrew(crew);
         selected.setStatus("ASSIGNED");
-        faultDAO.updateFault(selected);
+        // Route through FaultService so DB, CSV, and in-memory list all stay in sync
+        FaultService.updateFault(selected);
         resourceDAO.setCrewBusy(crew);
 
         FaultService.refresh();

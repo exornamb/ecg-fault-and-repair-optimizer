@@ -1,6 +1,5 @@
 package com.g15.dsa.controller;
 
-import com.g15.dsa.dao.FaultDAO;
 import com.g15.dsa.dao.ResourceDAO;
 import com.g15.dsa.dao.AuditEventDAO;
 import com.g15.dsa.model.Fault;
@@ -277,9 +276,9 @@ public class FaultManagementController {
 
         Optional<ButtonType> result = confirm.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            FaultDAO dao = new FaultDAO();
-            dao.deleteFault(selectedFault.getId());
-            
+            // Route delete through FaultService so DB, CSV, and in-memory list all stay in sync
+            FaultService.deleteFault(selectedFault);
+
             new AuditEventDAO().logEvent(
                 "DELETE",
                 "service_requests",
@@ -308,8 +307,8 @@ public class FaultManagementController {
         selectedFault.setCrew(bestCrew);
         selectedFault.setStatus("ASSIGNED");
 
-        FaultDAO dao = new FaultDAO();
-        dao.updateFault(selectedFault);
+        // Route update through FaultService so DB, CSV, and in-memory list all stay in sync
+        FaultService.updateFault(selectedFault);
         resourceDAO.setCrewBusy(bestCrew);
 
         new AuditEventDAO().logEvent(

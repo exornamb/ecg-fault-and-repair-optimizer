@@ -1,5 +1,5 @@
 request_id,source_location_id,destination_location_id,category,urgency,time_submitted,deadline,status
-9,ECG customer report - Dzorwulu,48,Fallen Conductor,3,2026-08-01T14:23:23.875298200,2026-08-02T03:23:23.875298200,OPEN,
+9,Dzorwulu,,Fallen Conductor,3,2026-08-26T12:10:24.111041,2026-08-26T12:10:24.111041,ASSIGNED,Crew Alpha (Legon Substation)
 11,ECG customer report - Evandy Hostel,43,Fallen Conductor,4,2026-08-07T06:23:23.875298200,2026-08-07T10:23:23.875298200,OPEN,
 12,ECG customer report - Presec Legon,17,Meter Fault,2,2026-08-03T23:23:23.875298200,2026-08-04T07:23:23.875298200,OPEN,
 13,ECG customer report - College of Education,47,Fallen Conductor,3,2026-08-04T12:23:23.875298200,2026-08-05T10:23:23.875298200,OPEN,
@@ -38,7 +38,7 @@ request_id,source_location_id,destination_location_id,category,urgency,time_subm
 47,ECG customer report - Dome,34,Cable Burst,1,2026-08-08T23:23:23.876296400,2026-08-09T01:23:23.876296400,OPEN,
 48,ECG customer report - School of Law,22,Cable Burst,5,2026-07-31T05:23:23.876296400,2026-07-31T15:23:23.876296400,OPEN,
 16,ECG customer report - Commonwealth Hall,18,Meter Fault,5,2026-08-08T13:23:23.875298200,2026-08-08T16:23:23.875298200,ASSIGNED,Meter Team 09
-10,ECG customer report - Mensah Sarbah Hall,4,Meter Fault,5,2026-08-09T05:23:23.875298200,2026-08-09T21:23:23.875298200,ASSIGNED,Meter Team 08
+10,Mensah Sarbah Hall,,Meter Fault,5,2026-08-26T12:26:59.254058600,2026-08-26T12:26:59.254058600,RESOLVED,Meter Team 08
 1,ECG customer report - Okponglo Junction,26,Meter Fault,3,2026-08-05T00:23:23.871291,2026-08-05T16:23:23.871291,ASSIGNED,Meter Team 01
 6,ECG customer report - Bani Hostel,5,Cable Burst,5,2026-08-02T07:23:23.872288300,2026-08-02T13:23:23.872288300,ASSIGNED,Cable Truck 02
 4,ECG customer report - Haatso,8,Transformer Failure,2,2026-08-09T02:23:23.871291,2026-08-09T23:23:23.871291,RESOLVED,Transformer Crew 03
@@ -97,7 +97,7 @@ request_id,source_location_id,destination_location_id,category,urgency,time_subm
 99,ECG customer report - Tetteh Quarshie,39,Transformer Failure,4,2026-07-30T23:23:23.878290700,2026-07-31T11:23:23.878290700,OPEN,
 100,ECG customer report - Night Market,32,Transformer Failure,4,2026-08-03T06:23:23.878290700,2026-08-03T15:23:23.878290700,OPEN,
 101,ECG customer report - UG Basic School,40,Cable Burst,4,2026-08-07T12:23:23.878290700,2026-08-08T11:23:23.878290700,OPEN,
-102,ECG customer report - UG Stadium,36,Fallen Conductor,5,2026-08-03T18:23:23.878290700,2026-08-04T02:23:23.878290700,OPEN,
+102,UG Stadium,,Fallen Conductor,5,2026-08-26T12:27:15.870362300,2026-08-26T12:27:15.870362300,ASSIGNED,Crew Alpha (Legon Substation)
 103,ECG customer report - Accra Mall,2,Meter Fault,4,2026-07-31T23:23:23.878290700,2026-08-01T01:23:23.878290700,OPEN,
 104,ECG customer report - A&C Mall,16,Meter Fault,1,2026-08-07T06:23:23.878290700,2026-08-07T15:23:23.878290700,OPEN,
 105,ECG customer report - 37 Station,19,Cable Burst,5,2026-07-31T17:23:23.878290700,2026-07-31T21:23:23.878290700,OPEN,
@@ -299,3 +299,6 @@ request_id,source_location_id,destination_location_id,category,urgency,time_subm
 68,ECG customer report - Nungua Barrier,1,Fallen Conductor,5,2026-08-01T21:23:23.877289400,2026-08-02T15:23:23.877289400,ASSIGNED,Cable Truck 10
 134,ECG customer report - Ashaley Botwe,5,Fallen Conductor,5,2026-07-31T04:23:23.879292,2026-07-31T19:23:23.879292,ASSIGNED,Cable Truck 06
 258,ECG customer report - West Legon,9,Transformer Failure,5,2026-07-31T14:23:23.883288200,2026-08-01T02:23:23.883288200,ASSIGNED,Transformer Crew 03
+9,Dzorwulu,,Fallen Conductor,3,2026-08-26T12:10:24.111041,2026-08-26T12:10:24.111041,ASSIGNED,Crew Alpha (Legon Substation)
+FLT-9551,Balme Library,,Transformer Failure,5,2026-08-26T12:11:48.618706600,2026-08-26T12:11:48.618706600,ASSIGNED,Crew Alpha (Legon Substation)
+FLT-8297,Balme Library,,Transformer Failure,4,2026-08-26T12:26:43.844590,2026-08-26T12:26:43.844590,ASSIGNED,Crew Alpha (Legon Substation)

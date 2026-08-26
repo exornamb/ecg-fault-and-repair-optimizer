@@ -1,6 +1,5 @@
 package com.g15.dsa.controller;
 
-import com.g15.dsa.dao.FaultDAO;
 import com.g15.dsa.dao.LocationDAO;
 import com.g15.dsa.dao.ResourceDAO;
 import com.g15.dsa.model.Fault;
@@ -123,10 +122,8 @@ public class EditFaultController {
         fault.setCrew(crewBox.getValue());
         fault.setStatus(statusBox.getValue());
 
-        FaultDAO dao = new FaultDAO();
-        dao.updateFault(fault);
-
-        FaultService.refresh();
+        // Route through FaultService so DB, CSV, and in-memory list all stay in sync
+        FaultService.updateFault(fault);
 
         if (controller != null) {
             controller.refreshTable();

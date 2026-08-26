@@ -68,6 +68,14 @@ public class AnalyticsController {
         loadPriorityChart();
         loadCrewWorkload();
         loadDsaBenchmarks();
+
+        // Live data update listener across all views
+        FaultService.getFaults().addListener((javafx.collections.ListChangeListener<Fault>) change -> {
+            loadSummaryStats();
+            loadAreaChart();
+            loadPriorityChart();
+            loadCrewWorkload();
+        });
     }
 
     private void loadSummaryStats() {
@@ -80,7 +88,7 @@ public class AnalyticsController {
             if ("Critical".equalsIgnoreCase(f.getPriorityText()) || "High".equalsIgnoreCase(f.getPriorityText()) || f.getUrgency() >= 4) {
                 high++;
             }
-            if ("RESOLVED".equalsIgnoreCase(f.getStatus())) {
+            if ("RESOLVED".equalsIgnoreCase(f.getStatus()) || "COMPLETED".equalsIgnoreCase(f.getStatus())) {
                 resolved++;
             }
         }
@@ -146,19 +154,37 @@ public class AnalyticsController {
         ResourceDAO dao = new ResourceDAO();
         List<Crew> crews = dao.getAllCrewDetails();
 
-        // Calculate assigned faults per crew
-        Map<String, Integer> crewFaultCounts = new HashMap<>();
+        // Calculate ACTIVE assigned faults per crew (exclude RESOLVED / COMPLETED)
+        Map<String, Integer> activeFaultsPerCrew = new HashMap<>();
         for (Fault f : FaultService.getFaults()) {
-            if (f.getCrew() != null && !f.getCrew().isEmpty() && !"Unassigned".equalsIgnoreCase(f.getCrew())) {
-                crewFaultCounts.put(f.getCrew(), crewFaultCounts.getOrDefault(f.getCrew(), 0) + 1);
+            String status = f.getStatus() != null ? f.getStatus().toUpperCase() : "";
+            boolean isResolved = status.equals("RESOLVED") || status.equals("COMPLETED");
+            if (!isResolved && f.getCrew() != null && !f.getCrew().trim().isEmpty() && !"Unassigned".equalsIgnoreCase(f.getCrew().trim())) {
+                String cName = f.getCrew().trim();
+                activeFaultsPerCrew.put(cName, activeFaultsPerCrew.getOrDefault(cName, 0) + 1);
             }
         }
 
+        // Match active counts to crew records
         for (Crew c : crews) {
-            c.setAssignedFaults(crewFaultCounts.getOrDefault(c.getName(), 0));
+            int active = 0;
+            for (Map.Entry<String, Integer> entry : activeFaultsPerCrew.entrySet()) {
+                if (entry.getKey().equalsIgnoreCase(c.getName())
+                        || entry.getKey().toLowerCase().startsWith(c.getName().toLowerCase())
+                        || c.getName().toLowerCase().startsWith(entry.getKey().toLowerCase())) {
+                    active += entry.getValue();
+                }
+            }
+            c.setAssignedFaults(active);
+            if (active >= c.getCapacity() || active > 0) {
+                c.setAvailability("BUSY");
+            } else {
+                c.setAvailability("AVAILABLE");
+            }
         }
 
         workloadTable.setItems(FXCollections.observableArrayList(crews));
+        workloadTable.refresh();
     }
 
     private void loadDsaBenchmarks() {
